@@ -1,0 +1,36 @@
+{
+  "name": "app-estudiantes-backend",
+  "version": "1.0.0",
+  "description": "Backend para una app de estudiantes",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./app/index.js",
+    "dev": "npm run lint && nodemon ./app/index.js",
+    "lint": "eslint . "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/repicam/app-estudiantes-backend.git"
+  },
+  "author": "Equipo1-Devathon3",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/repicam/app-estudiantes-backend/issues"
+  },
+  "homepage": "https://github.com/repicam/app-estudiantes-backend#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "standard": "^17.0.0"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/standard/eslintrc.json"
+  }
+}
