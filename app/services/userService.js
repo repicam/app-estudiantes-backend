@@ -16,10 +16,6 @@ const registroUsuario = async (req) => {
 
   const { name, username, email, password } = req.body
 
-  if (!name || !username || !email || !password) {
-    return createResponse(false, data, 'Faltan datos obligatorios (name, username, email y password)', 400)
-  }
-
   const usernameExists = await User.find({ username })
   const emailExists = await User.find({ email })
 
