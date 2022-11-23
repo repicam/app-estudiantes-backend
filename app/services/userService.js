@@ -45,4 +45,21 @@ const registroUsuario = async (req) => {
   return createResponse(true, data, null, 201)
 }
 
-module.exports = { registroUsuario }
+const renovarToken = async (req) => {
+  const { name, id } = req
+
+  const userToken = {
+    id,
+    name
+  }
+
+  const token = signToken(userToken)
+
+  const data = {
+    token
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+module.exports = { registroUsuario, renovarToken }
