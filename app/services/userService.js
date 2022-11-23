@@ -50,12 +50,7 @@ const registroUsuario = async (req) => {
 }
 
 const loginUsuario = async (req) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return createResponse(false, null, errors.array(), 400)
-  }
   const { email, password } = req.body
-  // const findEmail = await User.find({email: email})
   const userDB = await User.find({ email })
   if (userDB) {
     if (!bcrypt.compareSync(password, userDB.password)) {
