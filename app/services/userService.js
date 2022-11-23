@@ -49,4 +49,32 @@ const registroUsuario = async (req) => {
   return createResponse(true, data, null, 201)
 }
 
-module.exports = { registroUsuario }
+const loginUsuario = async(req) => {
+  
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return createResponse(false, null, errors.array(), 400)
+  }
+  const { email, password } = req.body;
+  // const findEmail = await User.find({email: email})
+  const userDB = await User.find({email: email})
+  if(userDB){
+    if(!bcrypt.compareSync( password , userDB.password)){
+      return createResponse(false, null, "No Autorizado", 401)
+    }
+    const userToken = {
+      id: userDB._id,
+    }
+    var token = signToken(userToken)
+    data = {
+      id: userDB._id,
+      name: userDB.name,
+      username: userDB.username,
+      token
+    }
+    return createResponse(true,data,null,200)
+  }
+  return createResponse(false, null, "Error email no existe", 400)
+}
+
+module.exports = { registroUsuario, loginUsuario }
