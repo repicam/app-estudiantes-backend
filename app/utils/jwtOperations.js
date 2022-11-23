@@ -7,4 +7,11 @@ const signToken = (userToken) => {
   )
 }
 
-module.exports = { signToken }
+const verifyToken = (request) => {
+  const token = request.headers.authorization?.split(' ')[1]
+  const payload = jwt.verify(token, process.env.JWT_SECRET_KEY)
+  request.name = payload.name
+  request.id = payload.id
+}
+
+module.exports = { signToken, verifyToken }
