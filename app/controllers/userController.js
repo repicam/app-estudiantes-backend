@@ -26,4 +26,4 @@ const loginUsuario = async (req, res, next) => {
     next(error)
   }
 }
-module.exports = { registroUsuario, loginUsuario}
+module.exports = { registroUsuario, loginUsuario }
