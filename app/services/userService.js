@@ -59,7 +59,7 @@ const loginUsuario = async (req) => {
   const userDB = await User.find({ email })
   if (userDB) {
     if (!bcrypt.compareSync(password, userDB.password)) {
-      return createResponse(false, null, 'No Autorizado', 401)
+      return createResponse(false, null, 'Password Incorrecto', 401)
     }
     const userToken = {
       id: userDB._id
@@ -73,7 +73,7 @@ const loginUsuario = async (req) => {
     }
     return createResponse(true, data, null, 200)
   }
-  return createResponse(false, null, 'Error email no existe', 400)
+  return createResponse(false, null, 'Email Incorrecto', 400)
 }
 
 module.exports = { registroUsuario, loginUsuario }
