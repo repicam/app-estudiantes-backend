@@ -26,3 +26,10 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
         "password": "password"
     }
+· POST (/api/login) con un body del siguiente estilo
+
+    {
+        "email": "email@gmail.com",
+
+        "password": "password"
+    }
