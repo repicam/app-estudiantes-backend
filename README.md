@@ -26,7 +26,14 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
         "password": "password"
     }
-<<<<<<< HEAD
+    
+· POST (/api/login) con un body del siguiente estilo
+
+    {
+        "email": "email@gmail.com",
+
+        "password": "password"
+    }
 
 · POST (/api/renew) con el token por el header _Authorization_ y retorna uno nuevo con 12h mas
 
@@ -43,12 +50,3 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 ## Verificación de token
 
 En las rutas que requieran validacion de token, importaremos lo siguiente _const tokenValidator = require('../middlewares/tokenValidator')_ y lo añadiremos como middleware a la peticion
-=======
-· POST (/api/login) con un body del siguiente estilo
-
-    {
-        "email": "email@gmail.com",
-
-        "password": "password"
-    }
->>>>>>> feature/login
