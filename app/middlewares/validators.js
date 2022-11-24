@@ -11,5 +11,11 @@ const bodyValidator = [
   body('password').trim().not().isEmpty().withMessage('Password es obligatorio')
     .isLength({ min: 6 }).withMessage('Password debe tener al menos 6 caracteres')
 ]
+const loginValidator = [
+  body('email').trim().not().isEmpty().withMessage('Email es obligatorio')
+    .isEmail().normalizeEmail().withMessage('Introduce un email valido'),
 
-module.exports = { bodyValidator }
+  body('password').trim().not().isEmpty().withMessage('Password es obligatorio')
+    .isLength({ min: 6 }).withMessage('Password debe tener al menos 6 caracteres')
+]
+module.exports = { bodyValidator, loginValidator }

@@ -64,13 +64,10 @@ const renovarToken = async (req) => {
 
 const loginUsuario = async (req) => {
   const errors = validationResult(req)
-  console.log(errors)
   if (!errors.isEmpty()) {
     return createResponse(false, null, errors.array(), 400)
   }
   const { email, password } = req.body
-  console.log(email)
-  console.log(password)
   const userDB = await User.find({ email })
   if (userDB) {
     if (!bcrypt.compareSync(password, userDB.password)) {
