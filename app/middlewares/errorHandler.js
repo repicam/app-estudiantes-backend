@@ -1,15 +1,29 @@
+const { createResponse } = require('../utils/responseGenerator')
+
 const errorHandler = (error, request, response, next) => {
+  let responseData = null
+
   if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'Id introducido incorrecto' })
+    responseData = createResponse(false, null, 'Id introducido incorrecto', 400)
   } else if (error.name === 'ValidationError') {
-    return response.status(400).json({ error: error.message })
+    responseData = createResponse(false, null, 'error.message', 400)
   } else if (error.name === 'TokenExpiredError') {
-    return response.status(401).json({ error: 'El token administrado ha caducado' })
+    responseData = createResponse(false, null, 'El token administrado ha caducado', 401)
   } else if (error.name === 'JsonWebTokenError') {
-    return response.status(401).json({ error: 'Tu petición no tiene cabecera de autorización o es incorrecta' })
+    responseData = createResponse(false, null, 'Tu petición no tiene cabecera de autorización o es incorrecta', 401)
   }
 
-  next(error)
+  if (!responseData) {
+    next(error)
+  }
+
+  const { success, data, errorMsg, statusCode } = responseData
+  const resp = {
+    success,
+    data,
+    errorMsg
+  }
+  response.status(statusCode).json(resp)
 }
 
 module.exports = errorHandler
