@@ -19,7 +19,11 @@ const userSchema = new Schema({
     type: String,
     minlength: 6,
     required: true
-  }
+  },
+  cursos: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Curso'
+  }]
 })
 
 userSchema.set('toJSON', {
