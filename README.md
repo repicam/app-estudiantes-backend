@@ -29,6 +29,16 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 · POST (/api/renew) con el token por el header _Authorization_ y retorna uno nuevo con 12h mas
 
+· POST (/api/cursos) con un body del siguiente estilo
+
+    {
+        "titulo": "Pruebaaa",
+
+        "descripcion": "Este curso es de prueba", //(opcional)
+
+        "estado": "EP"
+    }
+
 ## Verificación de token
 
 En las rutas que requieran validacion de token, importaremos lo siguiente _const tokenValidator = require('../middlewares/tokenValidator')_ y lo añadiremos como middleware a la peticion
