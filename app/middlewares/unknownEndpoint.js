@@ -1,7 +1,13 @@
 const { createResponse } = require('../utils/responseGenerator')
 
 const unknownEndpoint = (request, response) => {
-  return createResponse(false, null, 'Endpoint no registrado', 404)
+  const { success, data, errorMsg, statusCode } = createResponse(false, null, 'Endpoint no registrado', 404)
+  const resp = {
+    success,
+    data,
+    errorMsg
+  }
+  response.status(statusCode).json(resp)
 }
 
 module.exports = unknownEndpoint
