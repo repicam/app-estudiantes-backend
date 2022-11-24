@@ -12,4 +12,8 @@ const bodyValidator = [
     .isLength({ min: 6 }).withMessage('Password debe tener al menos 6 caracteres')
 ]
 
-module.exports = { bodyValidator }
+const todoValidator = [
+  body('title').trim().not().isEmpty().withMessage('Title es obligatorio')
+]
+
+module.exports = { bodyValidator, todoValidator }
