@@ -74,7 +74,8 @@ const loginUsuario = async (req) => {
       return createResponse(false, null, 'email o password incorrecto', 401)
     }
     const userToken = {
-      id: userDB._id
+      id: userDB._id,
+      name: userDB.name
     }
     const token = signToken(userToken)
     const data = {
