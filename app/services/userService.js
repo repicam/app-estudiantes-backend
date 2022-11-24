@@ -62,4 +62,33 @@ const renovarToken = async (req) => {
   return createResponse(true, data, null, 200)
 }
 
-module.exports = { registroUsuario, renovarToken }
+const loginUsuario = async (req) => {
+  const errors = validationResult(req)
+  console.log(errors)
+  if (!errors.isEmpty()) {
+    return createResponse(false, null, errors.array(), 400)
+  }
+  const { email, password } = req.body
+  console.log(email)
+  console.log(password)
+  const userDB = await User.find({ email })
+  if (userDB) {
+    if (!bcrypt.compareSync(password, userDB.password)) {
+      return createResponse(false, null, 'email o password incorrecto', 401)
+    }
+    const userToken = {
+      id: userDB._id
+    }
+    const token = signToken(userToken)
+    const data = {
+      id: userDB._id,
+      name: userDB.name,
+      username: userDB.username,
+      token
+    }
+    return createResponse(true, data, null, 200)
+  }
+  return createResponse(false, null, 'email o password incorrecto', 401)
+}
+
+module.exports = { registroUsuario, renovarToken, loginUsuario }

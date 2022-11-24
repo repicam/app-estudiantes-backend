@@ -28,4 +28,18 @@ const renovarToken = async (req, res, next) => {
   }
 }
 
-module.exports = { registroUsuario, renovarToken }
+const loginUsuario = async (req, res, next) => {
+  try {
+    const { success, data, errorMsg, statusCode } = await userService.loginUsuario(req)
+    const response = {
+      success,
+      data,
+      errorMsg
+    }
+    res.status(statusCode).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { registroUsuario, renovarToken, loginUsuario }
