@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const connection = `mongodb+srv://${process.env.BBDD_USER}:${process.env.BBDD_PASS}@cluster0.k30iuzc.mongodb.net/${process.env.BBDD_CLUSTER}?retryWrites=true&w=majority`
+const connection = `mongodb+srv://${process.env.BBDD_USER}:${process.env.BBDD_PASS}@${process.env.BBDD_CLUSTER}.jnea1oe.mongodb.net/${process.env.BBDD_CLUSTER}?retryWrites=true&w=majority`
 
 const connectDB = () => {
   mongoose.connect(connection)
