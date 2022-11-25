@@ -1,6 +1,6 @@
 const { body } = require('express-validator')
 
-const bodyValidator = [
+const registroValidator = [
   body('email').trim().not().isEmpty().withMessage('Email es obligatorio')
     .isEmail().normalizeEmail().withMessage('Introduce un email valido'),
 
@@ -11,9 +11,22 @@ const bodyValidator = [
   body('password').trim().not().isEmpty().withMessage('Password es obligatorio')
     .isLength({ min: 6 }).withMessage('Password debe tener al menos 6 caracteres')
 ]
+const loginValidator = [
+  body('email').trim().not().isEmpty().withMessage('Email es obligatorio')
+    .isEmail().normalizeEmail().withMessage('Introduce un email valido'),
 
+  body('password').trim().not().isEmpty().withMessage('Password es obligatorio')
+    .isLength({ min: 6 }).withMessage('Password debe tener al menos 6 caracteres')
+]
 const todoValidator = [
   body('title').trim().not().isEmpty().withMessage('Title es obligatorio')
 ]
 
-module.exports = { bodyValidator, todoValidator }
+const cursoValidator = [
+  body('titulo').trim().not().isEmpty().withMessage('Titulo es obligatorio'),
+
+  body('estado').trim().not().isEmpty().withMessage('Estado es obligatorio')
+    .isString().isIn(['PH', 'EP', 'FZ']).withMessage('Estado incorrecto')
+]
+
+module.exports = { registroValidator, cursoValidator, loginValidator, todoValidator }

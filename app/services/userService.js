@@ -46,7 +46,14 @@ const registroUsuario = async (req) => {
 }
 
 const renovarToken = async (req) => {
+  let data = null
   const { name, id } = req
+
+  const userExists = await User.find({ id })
+
+  if (!userExists) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
 
   const userToken = {
     id,
@@ -55,11 +62,41 @@ const renovarToken = async (req) => {
 
   const token = signToken(userToken)
 
-  const data = {
-    token
+  data = {
+    token,
+    id,
+    name,
+    username: userExists.username
   }
 
   return createResponse(true, data, null, 200)
 }
 
-module.exports = { registroUsuario, renovarToken }
+const loginUsuario = async (req) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return createResponse(false, null, errors.array(), 400)
+  }
+  const { email, password } = req.body
+  const userDB = await User.find({ email })
+  if (userDB) {
+    if (!bcrypt.compareSync(password, userDB.password)) {
+      return createResponse(false, null, 'email o password incorrecto', 401)
+    }
+    const userToken = {
+      id: userDB._id,
+      name: userDB.name
+    }
+    const token = signToken(userToken)
+    const data = {
+      id: userDB._id,
+      name: userDB.name,
+      username: userDB.username,
+      token
+    }
+    return createResponse(true, data, null, 200)
+  }
+  return createResponse(false, null, 'email o password incorrecto', 401)
+}
+
+module.exports = { registroUsuario, renovarToken, loginUsuario }
