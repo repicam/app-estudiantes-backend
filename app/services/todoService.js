@@ -19,8 +19,9 @@ const crearTodo = async (req) => {
     return createResponse(false, data, 'Error obteniendo el usuario', 400)
   }
   body.user = userExists._id
-  body.completed = body.completed || false
   const createdTodo = await Todo.create(body)
+
+  await User.saveToDoIntoUser(createdTodo, userExists)
 
   data = {
     todo: createdTodo

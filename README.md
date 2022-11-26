@@ -55,15 +55,17 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 - GET (/api/curso/:id) con el token por el header _Authorization_ y retorna el curso si es del usuario y el userId
 
-· POST (/api/cursos) con un body del siguiente estilo
+### ToDos
 
-    {
-        "titulo": "Pruebaaa",
+- POST (/api/toDo) con un body del siguiente estilo
 
-        "descripcion": "Este curso es de prueba", //(opcional)
+      {
+          "titulo": "Pruebaaa",
 
-        "estado": "EP"
-    }
+          "descripcion": "Este curso es de prueba", //(opcional)
+
+          "completado": true //(opcional)
+      }
 
 ## Verificación de token
 

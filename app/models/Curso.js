@@ -5,7 +5,10 @@ const cursoSchema = new Schema({
     type: String,
     required: true
   },
-  descripcion: String,
+  descripcion: {
+    type: String,
+    default: null
+  },
   estado: {
     type: String,
     required: true
