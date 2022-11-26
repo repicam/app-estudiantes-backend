@@ -55,6 +55,12 @@ const renovarToken = async (req) => {
     return createResponse(false, data, 'Error obteniendo el usuario', 400)
   }
 
+  const userExists = await User.find({ id })
+
+  if (!userExists) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
   const userToken = {
     userId,
     userName

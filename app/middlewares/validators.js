@@ -18,6 +18,11 @@ const loginValidator = [
   body('password').trim().not().isEmpty().withMessage('Password es obligatorio')
     .isLength({ min: 6 }).withMessage('Password debe tener al menos 6 caracteres')
 ]
+
+const todoValidator = [
+  body('title').trim().not().isEmpty().withMessage('Title es obligatorio')
+]
+
 const cursoValidator = [
   body('titulo').trim().not().isEmpty().withMessage('Titulo es obligatorio'),
 
@@ -25,4 +30,4 @@ const cursoValidator = [
     .isString().isIn(['PH', 'EP', 'FZ']).withMessage('Estado incorrecto')
 ]
 
-module.exports = { registroValidator, cursoValidator, loginValidator }
+module.exports = { registroValidator, cursoValidator, loginValidator, todoValidator }
