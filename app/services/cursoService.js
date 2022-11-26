@@ -11,9 +11,9 @@ const crearCurso = async (req) => {
     return createResponse(false, data, errors.array(), 400)
   }
 
-  const { id, body } = req
+  const { userId, body } = req
 
-  const userExists = await User.find({ id })
+  const userExists = await User.findById(userId)
 
   if (!userExists) {
     return createResponse(false, data, 'Error obteniendo el usuario', 400)
@@ -22,6 +22,8 @@ const crearCurso = async (req) => {
   body.user = userExists._id
   const cursoData = setFechaByEstado(body)
   const createdCurso = await Curso.create(cursoData)
+
+  await User.saveCursoIntoUser(createdCurso, userExists)
 
   data = {
     curso: createdCurso
@@ -49,4 +51,45 @@ function setFechaByEstado (cursoData) {
   return cursoData
 }
 
-module.exports = { crearCurso }
+const getCursos = async (req) => {
+  let data = null
+
+  const { userId } = req
+
+  const user = await User.findById(userId)
+
+  if (!user) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  data = {
+    userId,
+    cursos: user.cursos
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+const getCursoById = async (req) => {
+  let data = null
+
+  const { userId, params } = req
+  const { id } = params
+
+  const user = await User.findById(userId)
+
+  if (!user) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  const curso = await Curso.find({ _id: id, user: userId })
+
+  data = {
+    userId,
+    curso
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+module.exports = { crearCurso, getCursos, getCursoById }

@@ -6,5 +6,8 @@ const tokenValidator = require('../middlewares/tokenValidator')
 const router = express.Router()
 
 router.route('/').post(cursoValidator, tokenValidator, cursoController.crearCurso)
+  .get(tokenValidator, cursoController.getCursos)
+
+router.route('/:id').get(tokenValidator, cursoController.getCursoById)
 
 module.exports = router

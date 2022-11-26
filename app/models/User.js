@@ -40,7 +40,7 @@ const find = async (data) => {
 }
 
 const findById = async (id) => {
-  return await User.findById(id)
+  return await User.findById(id).populate('cursos')
 }
 
 const create = async (newUserData) => {
@@ -50,4 +50,9 @@ const create = async (newUserData) => {
   return user
 }
 
-module.exports = { find, findById, create }
+const saveCursoIntoUser = async (curso, user) => {
+  user.cursos = user.cursos.concat(curso._id)
+  await user.save()
+}
+
+module.exports = { find, findById, create, saveCursoIntoUser }

@@ -33,4 +33,8 @@ const create = async (newCursoData) => {
   return curso
 }
 
-module.exports = { create }
+const find = async (data) => {
+  return await Curso.find(data)
+}
+
+module.exports = { create, find }
