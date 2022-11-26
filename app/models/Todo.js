@@ -1,18 +1,30 @@
 const { model, Schema } = require('mongoose')
-const mongoose = require('mongoose')
+
 const todoSchema = new Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  title: {
+  titulo: {
     type: String,
     required: true
   },
-  description: String,
-  completed: Boolean
+  descripcion: {
+    type: String,
+    default: null
+  },
+  completado: {
+    type: Boolean,
+    default: false
+  }
 },
 { timestamps: true })
+
+todoSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    delete returnedObject.__v
+  }
+})
 
 const Todo = model('Todo', todoSchema)
 

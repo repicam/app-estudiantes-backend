@@ -11,6 +11,7 @@ const registroValidator = [
   body('password').trim().not().isEmpty().withMessage('Password es obligatorio')
     .isLength({ min: 6 }).withMessage('Password debe tener al menos 6 caracteres')
 ]
+
 const loginValidator = [
   body('email').trim().not().isEmpty().withMessage('Email es obligatorio')
     .isEmail().normalizeEmail().withMessage('Introduce un email valido'),
@@ -20,12 +21,14 @@ const loginValidator = [
 ]
 
 const todoValidator = [
-  body('title').trim().not().isEmpty().withMessage('Title es obligatorio')
+  body('titulo').trim().not().isEmpty().withMessage('Titulo es obligatorio'),
+  body('descripcion').optional({ nullable: true }).isString().withMessage('Descripción incorrecto'),
+  body('completado').optional({ nullable: true }).isBoolean().withMessage('Completado incorrecto')
 ]
 
 const cursoValidator = [
   body('titulo').trim().not().isEmpty().withMessage('Titulo es obligatorio'),
-
+  body('descripcion').optional({ nullable: true }).isString().withMessage('Descripción incorrecto'),
   body('estado').trim().not().isEmpty().withMessage('Estado es obligatorio')
     .isString().isIn(['PH', 'EP', 'FZ']).withMessage('Estado incorrecto')
 ]
