@@ -47,25 +47,25 @@ const registroUsuario = async (req) => {
 
 const renovarToken = async (req) => {
   let data = null
-  const { name, id } = req
+  const { userName, userId } = req
 
-  const userExists = await User.find({ id })
+  const userExists = await User.findById(userId)
 
   if (!userExists) {
     return createResponse(false, data, 'Error obteniendo el usuario', 400)
   }
 
   const userToken = {
-    id,
-    name
+    userId,
+    userName
   }
 
   const token = signToken(userToken)
 
   data = {
     token,
-    id,
-    name,
+    id: userId,
+    name: userName,
     username: userExists.username
   }
 
