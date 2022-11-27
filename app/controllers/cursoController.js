@@ -13,5 +13,18 @@ const crearCurso = async (req, res, next) => {
     next(error)
   }
 }
+const actualizarCurso = async (req, res, next) => {
+  try {
+    const { success, data, errorMsg, statusCode } = await cursoService.actualizarCurso(req)
+    const response = {
+      success,
+      data,
+      errorMsg
+    }
+    res.status(statusCode).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
 
-module.exports = { crearCurso }
+module.exports = { crearCurso, actualizarCurso }

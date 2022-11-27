@@ -1,4 +1,4 @@
-const { body } = require('express-validator')
+const { body, param } = require('express-validator')
 
 const registroValidator = [
   body('email').trim().not().isEmpty().withMessage('Email es obligatorio')
@@ -25,4 +25,6 @@ const cursoValidator = [
     .isString().isIn(['PH', 'EP', 'FZ']).withMessage('Estado incorrecto')
 ]
 
-module.exports = { registroValidator, cursoValidator, loginValidator }
+const paramCursoValidator = [param('id').isInt().withMessage('id debe ser entero')]
+
+module.exports = { registroValidator, cursoValidator, loginValidator, paramCursoValidator }

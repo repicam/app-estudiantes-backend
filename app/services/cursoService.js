@@ -48,5 +48,20 @@ function setFechaByEstado (cursoData) {
 
   return cursoData
 }
+const actualizarCurso = async (req) => {
+  const data = null
 
-module.exports = { crearCurso }
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return createResponse(false, data, errors.array(), 400)
+  }
+  const id = req.params.id
+  const cursoExists = await Curso.findById({ id })
+  if (!cursoExists) {
+    return createResponse(false, data, 'Error actualizando el usuario', 400)
+  }
+
+  return createResponse(true, data, null, 201)
+}
+
+module.exports = { crearCurso, actualizarCurso }

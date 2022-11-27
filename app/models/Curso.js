@@ -32,5 +32,9 @@ const create = async (newCursoData) => {
   const curso = await newCurso.save()
   return curso
 }
+const findById = async ({ id }) => {
+  const curso = await Curso.findById(id)
+  return curso
+}
 
-module.exports = { create }
+module.exports = { create, findById }
