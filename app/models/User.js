@@ -20,6 +20,16 @@ const userSchema = new Schema({
     minlength: 6,
     required: true
   },
+  imagen: {
+    public_id: {
+      type: String,
+      default: null
+    },
+    secure_url: {
+      type: String,
+      default: 'https://res.cloudinary.com/app-estudiantes/image/upload/v1669534655/default_user_photo.png'
+    }
+  },
   cursos: [{
     type: Schema.Types.ObjectId,
     ref: 'Curso'
@@ -44,7 +54,7 @@ const find = async (data) => {
 }
 
 const findById = async (id) => {
-  return await User.findById(id).populate('cursos').populate('todos')
+  return await User.findById(id).populate('cursos').populate('toDos')
 }
 
 const create = async (newUserData) => {
@@ -64,4 +74,8 @@ const saveToDoIntoUser = async (todo, user) => {
   await user.save()
 }
 
-module.exports = { find, findById, create, saveCursoIntoUser, saveToDoIntoUser }
+const update = async (id, newUserData) => {
+  return await User.findByIdAndUpdate(id, newUserData, { new: true })
+}
+
+module.exports = { find, findById, create, saveCursoIntoUser, saveToDoIntoUser, update }

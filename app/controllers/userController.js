@@ -42,4 +42,18 @@ const loginUsuario = async (req, res, next) => {
   }
 }
 
-module.exports = { registroUsuario, renovarToken, loginUsuario }
+const subirFotoUsuario = async (req, res, next) => {
+  try {
+    const { success, data, errorMsg, statusCode } = await userService.subirFotoUsuario(req)
+    const response = {
+      success,
+      data,
+      errorMsg
+    }
+    res.status(statusCode).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { registroUsuario, renovarToken, loginUsuario, subirFotoUsuario }
