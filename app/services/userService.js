@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const User = require('../models/User')
 const { createResponse } = require('../utils/responseGenerator')
 const { signToken } = require('../utils/jwtOperations')
+const { uploadImage, deleteTempImage, deleteImageCloud } = require('../utils/imageManager')
 
 const SALT_ROUNDS = 10
 
@@ -99,4 +100,46 @@ const loginUsuario = async (req) => {
   return createResponse(false, null, 'email o password incorrecto', 401)
 }
 
-module.exports = { registroUsuario, renovarToken, loginUsuario }
+const subirFotoUsuario = async (req) => {
+  let data = null
+
+  const { userId, files } = req
+  const imagen = files.imagen
+
+  if (!imagen) {
+    return createResponse(false, data, 'Error obteniendo la imagen', 400)
+  }
+
+  const userExists = await User.findById(userId)
+
+  if (!userExists) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  const imagenAntigua = userExists.imagen?.public_id
+
+  const uploadedImage = await uploadImage('photo_users', imagen.tempFilePath)
+  await deleteTempImage(imagen.tempFilePath)
+
+  userExists.imagen = {
+    public_id: uploadedImage.public_id,
+    secure_url: uploadedImage.secure_url
+  }
+
+  const userUpdated = await User.update(userId, userExists)
+
+  if (imagenAntigua) {
+    await deleteImageCloud(imagenAntigua)
+  }
+
+  data = {
+    imagen: userUpdated.imagen.secure_url,
+    id: userUpdated._id,
+    name: userUpdated.name,
+    username: userUpdated.username
+  }
+
+  return createResponse(true, data, null, 201)
+}
+
+module.exports = { registroUsuario, renovarToken, loginUsuario, subirFotoUsuario }
