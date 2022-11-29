@@ -41,7 +41,7 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 ### Cursos
 
-- POST (/api/curso) con un body del siguiente estilo
+- POST (/api/curso) con el token por el header _Authorization_ y un body del siguiente estilo
 
       {
           "titulo": "Pruebaaa",
@@ -57,7 +57,7 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 ### ToDos
 
-- POST (/api/toDo) con un body del siguiente estilo
+- POST (/api/toDo) con el token por el header _Authorization_ y un body del siguiente estilo
 
       {
           "titulo": "Pruebaaa",
@@ -72,6 +72,16 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 - PATCH (/api/user/uploadPhoto) con una imagen en la peticion tipo files
 
 - GET (/user/verify/email/:userId/:cryptoToken) donde verificaremos al usuario
+
+- PATCH (/api/user) con el token por el header _Authorization_ y un body del siguiente estilo (ningun campo es obligatorio)
+
+      {
+          "name": "Pruebaaa",
+
+          "username": "pruebaaaa",
+
+          "password": "pruebecita"
+      }
 
 ## Verificación de token
 

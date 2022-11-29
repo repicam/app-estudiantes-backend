@@ -33,4 +33,13 @@ const cursoValidator = [
     .isString().isIn(['PH', 'EP', 'FZ']).withMessage('Estado incorrecto')
 ]
 
-module.exports = { registroValidator, cursoValidator, loginValidator, todoValidator }
+const modificarUsuarioValidator = [
+  body('password').optional({ nullable: true }).isString().withMessage('Password incorrecto')
+    .isLength({ min: 6 }).withMessage('Password debe tener al menos 6 caracteres'),
+
+  body('name').optional({ nullable: true }).isString().withMessage('Name incorrecto'),
+
+  body('username').optional({ nullable: true }).isString().withMessage('Username incorrecto')
+]
+
+module.exports = { registroValidator, cursoValidator, loginValidator, todoValidator, modificarUsuarioValidator }

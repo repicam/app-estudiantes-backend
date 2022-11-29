@@ -192,4 +192,39 @@ const verificarEmail = async (req) => {
   return createResponse(true, data, null, 200)
 }
 
-module.exports = { registroUsuario, renovarToken, loginUsuario, subirFotoUsuario, verificarEmail }
+const modificarUsuario = async (req) => {
+  let data = null
+
+  const { userId, body } = req
+  const { username, name, password } = body
+
+  const userExists = await User.findById(userId)
+
+  if (!userExists) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  const usernameExists = await User.find({ username })
+
+  if (userExists.username !== username && usernameExists) {
+    return createResponse(false, data, 'Username ya en uso', 400)
+  }
+  const passwordHash = password ? await bcrypt.hash(password, SALT_ROUNDS) : userExists.password
+
+  userExists.username = username || userExists.username
+  userExists.name = name || userExists.name
+  userExists.password = passwordHash
+
+  const userUpdated = await User.update(userId, userExists)
+
+  data = {
+    imagen: userUpdated.imagen.secure_url,
+    id: userUpdated._id,
+    name: userUpdated.name,
+    username: userUpdated.username
+  }
+
+  return createResponse(true, data, null, 201)
+}
+
+module.exports = { registroUsuario, renovarToken, loginUsuario, subirFotoUsuario, verificarEmail, modificarUsuario }
