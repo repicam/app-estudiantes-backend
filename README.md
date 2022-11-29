@@ -71,6 +71,12 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 - PATCH (/api/user/uploadPhoto) con una imagen en la peticion tipo files
 
+- GET (/user/verify/email/:userId/:cryptoToken) donde verificaremos al usuario
+
 ## Verificación de token
 
 En las rutas que requieran validacion de token, importaremos lo siguiente _const tokenValidator = require('../middlewares/tokenValidator')_ y lo añadiremos como middleware a la peticion
+
+## Verificación de email
+
+A través del servicio de nodemailer, enviaremos un correo al usuario para que verifique el email (ahora no activo ya que no conecta con el servidor de correo, pero si pintamos por consola la url a la que hacer GET) con el endpoint de verify/email. Si el usuario no ha verificado pasadas las 12h, se vuelve a iniciar el proceso de verificación, con nuevo correo (nueva url con nuevo cryptoToken)

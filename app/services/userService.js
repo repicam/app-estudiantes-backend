@@ -4,6 +4,8 @@ const User = require('../models/User')
 const { createResponse } = require('../utils/responseGenerator')
 const { signToken } = require('../utils/jwtOperations')
 const { uploadImage, deleteTempImage, deleteImageCloud } = require('../utils/imageManager')
+const { initUserSeguridad, validateUser } = require('../utils/verificationManager')
+// const sendVerificationMail = require('../utils/emailTransporter')
 
 const SALT_ROUNDS = 10
 
@@ -24,8 +26,10 @@ const registroUsuario = async (req) => {
     return createResponse(false, data, 'Email y/o username ya existe. Pruebe a iniciar sesión', 400)
   }
   const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
+
   const userData = req.body
   userData.password = passwordHash
+  userData.seguridad = initUserSeguridad()
 
   const createdUser = await User.create(userData)
 
@@ -33,6 +37,9 @@ const registroUsuario = async (req) => {
     id: createdUser._id,
     name
   }
+
+  /* await sendVerificationMail(createdUser) */
+  console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/verify/email/${createdUser._id}/${createdUser.seguridad?.cryptoToken}`)
 
   const token = signToken(userToken)
 
@@ -86,6 +93,23 @@ const loginUsuario = async (req) => {
     if (!bcrypt.compareSync(password, userDB.password)) {
       return createResponse(false, null, 'email o password incorrecto', 401)
     }
+
+    const isTiempoExpirado = userDB.seguridad?.expirateTime
+      ? new Date().getTime() > userDB.seguridad?.expirateTime
+      : true
+
+    if (!userDB.seguridad?.verificado) {
+      if (!isTiempoExpirado) {
+        return createResponse(false, null, 'Debe verificar la cuenta. Revise su correo', 400)
+      } else if (isTiempoExpirado) {
+        userDB.seguridad = initUserSeguridad()
+        User.update(userDB._id, userDB)
+        /* await sendVerificationMail(User.update(userDB._id, userDB)) */
+        console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/verify/email/${userDB._id}/${userDB.seguridad?.cryptoToken}`)
+        return createResponse(false, null, 'Debe verificar la cuenta. Revise su correo', 400)
+      }
+    }
+
     const userToken = {
       id: userDB._id,
       name: userDB.name
@@ -145,4 +169,27 @@ const subirFotoUsuario = async (req) => {
   return createResponse(true, data, null, 201)
 }
 
-module.exports = { registroUsuario, renovarToken, loginUsuario, subirFotoUsuario }
+const verificarEmail = async (req) => {
+  let data = null
+  const { userId, cryptoToken } = req.params
+
+  const userExists = await User.find({ _id: userId, 'seguridad.cryptoToken': cryptoToken })
+
+  if (!userExists) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  userExists.seguridad = validateUser()
+
+  const userUpdated = await User.update(userId, userExists)
+
+  data = {
+    id: userId,
+    username: userUpdated.username,
+    verificado: userUpdated.seguridad.verificado
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+module.exports = { registroUsuario, renovarToken, loginUsuario, subirFotoUsuario, verificarEmail }

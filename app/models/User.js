@@ -30,6 +30,11 @@ const userSchema = new Schema({
       default: 'https://res.cloudinary.com/app-estudiantes/image/upload/v1669534655/default_user_photo.png'
     }
   },
+  seguridad: {
+    verificado: Boolean,
+    cryptoToken: String,
+    expirateTime: Date
+  },
   cursos: [{
     type: Schema.Types.ObjectId,
     ref: 'Curso'
