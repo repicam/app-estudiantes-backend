@@ -40,7 +40,8 @@ const registroUsuario = async (req) => {
     token,
     id: createdUser._id,
     name,
-    username
+    username,
+    imagen: createdUser.imagen.secure_url
   }
 
   return createResponse(true, data, null, 201)
@@ -67,7 +68,8 @@ const renovarToken = async (req) => {
     token,
     id: userId,
     name: userName,
-    username: userExists.username
+    username: userExists.username,
+    imagen: userExists.imagen.secure_url
   }
 
   return createResponse(true, data, null, 200)
@@ -93,7 +95,8 @@ const loginUsuario = async (req) => {
       id: userDB._id,
       name: userDB.name,
       username: userDB.username,
-      token
+      token,
+      imagen: userDB.imagen.secure_url
     }
     return createResponse(true, data, null, 200)
   }
