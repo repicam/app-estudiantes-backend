@@ -4,7 +4,7 @@ const User = require('../models/User')
 const { createResponse } = require('../utils/responseGenerator')
 const { signToken } = require('../utils/jwtOperations')
 const { uploadImage, deleteTempImage, deleteImageCloud } = require('../utils/imageManager')
-const { initUserSeguridad, validateUser } = require('../utils/verificationManager')
+const { initUserSeguridad, validateUser, buildForgotPassword } = require('../utils/verificationManager')
 // const sendVerificationMail = require('../utils/emailTransporter')
 
 const SALT_ROUNDS = 10
@@ -227,4 +227,76 @@ const modificarUsuario = async (req) => {
   return createResponse(true, data, null, 201)
 }
 
-module.exports = { registroUsuario, renovarToken, loginUsuario, subirFotoUsuario, verificarEmail, modificarUsuario }
+const resetPassword = async (req) => {
+  let data = null
+  const { params, body } = req
+  const { userId, cryptoToken } = params
+  const { password } = body
+
+  if (!password) {
+    return createResponse(false, data, 'Debe informar la nueva contraseña', 400)
+  }
+
+  const userExists = await User.find({
+    _id: userId,
+    'seguridad.cryptoToken': cryptoToken,
+    'seguridad.restaurarPassword': true
+  })
+
+  if (!userExists) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  userExists.seguridad = validateUser()
+  const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
+  userExists.password = passwordHash
+
+  const userUpdated = await User.update(userId, userExists)
+
+  data = {
+    id: userId,
+    email: userUpdated.email,
+    verificado: userUpdated.seguridad.verificado
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+const forgotPassword = async (req) => {
+  let data = null
+  const { email } = req.body
+
+  if (!email) {
+    return createResponse(false, data, 'Debe informar el email para recuperar la contraseña', 400)
+  }
+
+  const userExists = await User.find({ email })
+
+  if (!userExists) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  userExists.seguridad = buildForgotPassword()
+
+  User.update(userExists._id, userExists)
+  /* await sendForgotPasswordMail(User.update(userExists._id, userExists)) */
+  console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/reset/password/${userExists._id}/${userExists.seguridad?.cryptoToken}`)
+
+  data = {
+    email,
+    restaurarPassword: userExists.seguridad.restaurarPassword
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+module.exports = {
+  registroUsuario,
+  renovarToken,
+  loginUsuario,
+  subirFotoUsuario,
+  verificarEmail,
+  modificarUsuario,
+  resetPassword,
+  forgotPassword
+}

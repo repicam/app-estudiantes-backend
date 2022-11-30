@@ -12,5 +12,7 @@ router.route('/renew').post(tokenValidator, userController.renovarToken)
 router.route('/user/uploadPhoto').patch(tokenValidator, uploadTempFile, userController.subirFotoUsuario)
 router.route('/user/verify/email/:userId/:cryptoToken').get(userController.verificarEmail)
 router.route('/user').patch(tokenValidator, modificarUsuarioValidator, userController.modificarUsuario)
+router.route('/user/reset/password/:userId/:cryptoToken').put(userController.resetPassword)
+router.route('/user/forgot/password').post(userController.forgotPassword)
 
 module.exports = router

@@ -33,7 +33,8 @@ const userSchema = new Schema({
   seguridad: {
     verificado: Boolean,
     cryptoToken: String,
-    expirateTime: Date
+    expirateTime: Date,
+    restaurarPassword: Boolean
   },
   cursos: [{
     type: Schema.Types.ObjectId,
