@@ -9,6 +9,9 @@ const { initUserSeguridad, validateUser, buildForgotPassword } = require('../uti
 
 const SALT_ROUNDS = 10
 
+const MSG_NO_VERIFICADO = 'Debe verificar la cuenta. Revise su correo'
+const MSG_RESET_PASSWORD = 'Ha solicitado restaurar la contraseña. Revise su correo'
+
 const registroUsuario = async (req) => {
   let data = null
 
@@ -99,14 +102,10 @@ const loginUsuario = async (req) => {
       : true
 
     if (!userDB.seguridad?.verificado) {
-      if (!isTiempoExpirado) {
-        return createResponse(false, null, 'Debe verificar la cuenta. Revise su correo', 400)
-      } else if (isTiempoExpirado) {
-        userDB.seguridad = initUserSeguridad()
-        User.update(userDB._id, userDB)
-        /* await sendVerificationMail(User.update(userDB._id, userDB)) */
-        console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/verify/email/${userDB._id}/${userDB.seguridad?.cryptoToken}`)
-        return createResponse(false, null, 'Debe verificar la cuenta. Revise su correo', 400)
+      if (userDB.seguridad?.restaurarPassword) {
+        return verificarSeguridadUsuario(userDB, isTiempoExpirado, 'RESET')
+      } else {
+        return verificarSeguridadUsuario(userDB, isTiempoExpirado, 'VERIFY')
       }
     }
 
@@ -125,6 +124,33 @@ const loginUsuario = async (req) => {
     return createResponse(true, data, null, 200)
   }
   return createResponse(false, null, 'email o password incorrecto', 401)
+}
+
+function verificarSeguridadUsuario (user, isTiempoExpirado, accion) {
+  switch (accion) {
+    case 'RESET':
+      if (!isTiempoExpirado) {
+        return createResponse(false, null, MSG_RESET_PASSWORD, 400)
+      } else {
+        user.seguridad = buildForgotPassword()
+        User.update(user._id, user)
+        /* await sendForgotPasswordMail(User.update(user._id, user)) */
+        console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/reset/password/${user._id}/${user.seguridad?.cryptoToken}`)
+        return createResponse(false, null, MSG_RESET_PASSWORD, 400)
+      }
+    case 'VERIFY':
+      if (!isTiempoExpirado) {
+        return createResponse(false, null, MSG_NO_VERIFICADO, 400)
+      } else {
+        user.seguridad = initUserSeguridad()
+        User.update(user._id, user)
+        /* await sendVerificationMail(User.update(user._id, user)) */
+        console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/verify/email/${user._id}/${user.seguridad?.cryptoToken}`)
+        return createResponse(false, null, MSG_NO_VERIFICADO, 400)
+      }
+    default:
+      break
+  }
 }
 
 const subirFotoUsuario = async (req) => {
