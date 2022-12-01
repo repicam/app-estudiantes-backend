@@ -15,37 +15,57 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 ## Endpoints
 
-· POST (/api/registro) con un body del siguiente estilo
+### Usuarios
 
-    {
-        "username": "username",
+- POST (/api/registro) con un body del siguiente estilo
 
-        "name": "NombreYApellido",
+      {
+          "username": "username",
 
-        "email": "email@gmail.com",
+          "name": "NombreYApellido",
 
-        "password": "password"
-    }
+          "email": "email@gmail.com",
+
+          "password": "password"
+      }
     
-· POST (/api/login) con un body del siguiente estilo
+- POST (/api/login) con un body del siguiente estilo
 
-    {
-        "email": "email@gmail.com",
+      {
+          "email": "email@gmail.com",
 
-        "password": "password"
-    }
+          "password": "password"
+      }
 
-· POST (/api/renew) con el token por el header _Authorization_ y retorna uno nuevo con 12h mas
+- POST (/api/renew) con el token por el header _Authorization_ y retorna uno nuevo con 12h mas
 
-· POST (/api/cursos) con un body del siguiente estilo
+### Cursos
 
-    {
-        "titulo": "Pruebaaa",
+- POST (/api/curso) con un body del siguiente estilo
 
-        "descripcion": "Este curso es de prueba", //(opcional)
+      {
+          "titulo": "Pruebaaa",
 
-        "estado": "EP"
-    }
+          "descripcion": "Este curso es de prueba", //(opcional)
+
+          "estado": "EP"
+      }
+
+- GET (/api/curso) con el token por el header _Authorization_ y retorna un arreglo con todos los cursos del usuario y el userId
+
+- GET (/api/curso/:id) con el token por el header _Authorization_ y retorna el curso si es del usuario y el userId
+
+### ToDos
+
+- POST (/api/toDo) con un body del siguiente estilo
+
+      {
+          "titulo": "Pruebaaa",
+
+          "descripcion": "Este curso es de prueba", //(opcional)
+
+          "completado": true //(opcional)
+      }
 
 ## Verificación de token
 

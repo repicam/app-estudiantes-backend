@@ -5,7 +5,10 @@ const cursoSchema = new Schema({
     type: String,
     required: true
   },
-  descripcion: String,
+  descripcion: {
+    type: String,
+    default: null
+  },
   estado: {
     type: String,
     required: true
@@ -37,4 +40,8 @@ const findById = async ({ id }) => {
   return curso
 }
 
-module.exports = { create, findById }
+const find = async (data) => {
+  return await Curso.find(data)
+}
+
+module.exports = { create, findById, find }

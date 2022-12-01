@@ -6,7 +6,7 @@ const errorHandler = (error, request, response, next) => {
   if (error.name === 'CastError') {
     responseData = createResponse(false, null, 'Id introducido incorrecto', 400)
   } else if (error.name === 'ValidationError') {
-    responseData = createResponse(false, null, 'error.message', 400)
+    responseData = createResponse(false, null, error.message, 400)
   } else if (error.name === 'TokenExpiredError') {
     responseData = createResponse(false, null, 'El token administrado ha caducado', 401)
   } else if (error.name === 'JsonWebTokenError') {

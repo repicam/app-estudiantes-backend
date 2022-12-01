@@ -10,8 +10,8 @@ const signToken = (userToken) => {
 const verifyToken = (request) => {
   const token = request.headers.authorization?.split(' ')[1]
   const payload = jwt.verify(token, process.env.JWT_SECRET_KEY)
-  request.name = payload.name
-  request.id = payload.id
+  request.userName = payload.name
+  request.userId = payload.id
 }
 
 module.exports = { signToken, verifyToken }
