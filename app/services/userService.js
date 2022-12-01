@@ -4,13 +4,12 @@ const User = require('../models/User')
 const { createResponse } = require('../utils/responseGenerator')
 const { signToken } = require('../utils/jwtOperations')
 const { uploadImage, deleteTempImage, deleteImageCloud } = require('../utils/imageManager')
-const { initUserSeguridad, validateUser, buildForgotPassword } = require('../utils/verificationManager')
-// const sendVerificationMail = require('../utils/emailTransporter')
+const { initUserSeguridad, verificarUser, buildForgotPassword, passwordReset } = require('../utils/verificationManager')
+const { sendVerificationMail, sendForgotPasswordMail } = require('../utils/emailTransporter')
 
 const SALT_ROUNDS = 10
 
 const MSG_NO_VERIFICADO = 'Debe verificar la cuenta. Revise su correo'
-const MSG_RESET_PASSWORD = 'Ha solicitado restaurar la contraseña. Revise su correo'
 
 const registroUsuario = async (req) => {
   let data = null
@@ -41,7 +40,7 @@ const registroUsuario = async (req) => {
     name
   }
 
-  /* await sendVerificationMail(createdUser) */
+  await sendVerificationMail(createdUser)
   console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/verify/email/${createdUser._id}/${createdUser.seguridad?.cryptoToken}`)
 
   const token = signToken(userToken)
@@ -102,11 +101,10 @@ const loginUsuario = async (req) => {
       : true
 
     if (!userDB.seguridad?.verificado) {
-      if (userDB.seguridad?.restaurarPassword) {
-        return verificarSeguridadUsuario(userDB, isTiempoExpirado, 'RESET')
-      } else {
-        return verificarSeguridadUsuario(userDB, isTiempoExpirado, 'VERIFY')
-      }
+      return await verificarSeguridadUsuario(userDB, isTiempoExpirado)
+    } else if (userDB.seguridad?.restaurarPassword) {
+      userDB.seguridad = passwordReset(userDB)
+      await User.update(userDB._id, userDB)
     }
 
     const userToken = {
@@ -126,30 +124,16 @@ const loginUsuario = async (req) => {
   return createResponse(false, null, 'email o password incorrecto', 401)
 }
 
-function verificarSeguridadUsuario (user, isTiempoExpirado, accion) {
-  switch (accion) {
-    case 'RESET':
-      if (!isTiempoExpirado) {
-        return createResponse(false, null, MSG_RESET_PASSWORD, 400)
-      } else {
-        user.seguridad = buildForgotPassword()
-        User.update(user._id, user)
-        /* await sendForgotPasswordMail(User.update(user._id, user)) */
-        console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/reset/password/${user._id}/${user.seguridad?.cryptoToken}`)
-        return createResponse(false, null, MSG_RESET_PASSWORD, 400)
-      }
-    case 'VERIFY':
-      if (!isTiempoExpirado) {
-        return createResponse(false, null, MSG_NO_VERIFICADO, 400)
-      } else {
-        user.seguridad = initUserSeguridad()
-        User.update(user._id, user)
-        /* await sendVerificationMail(User.update(user._id, user)) */
-        console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/verify/email/${user._id}/${user.seguridad?.cryptoToken}`)
-        return createResponse(false, null, MSG_NO_VERIFICADO, 400)
-      }
-    default:
-      break
+async function verificarSeguridadUsuario (user, isTiempoExpirado) {
+  if (!isTiempoExpirado) {
+    return createResponse(false, null, MSG_NO_VERIFICADO, 400)
+  } else {
+    user.seguridad = initUserSeguridad()
+    const userUpdated = await User.update(user._id, user)
+    await sendVerificationMail(userUpdated)
+
+    console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/verify/email/${user._id}/${user.seguridad?.cryptoToken}`)
+    return createResponse(false, null, MSG_NO_VERIFICADO, 400)
   }
 }
 
@@ -205,7 +189,7 @@ const verificarEmail = async (req) => {
     return createResponse(false, data, 'Error obteniendo el usuario', 400)
   }
 
-  userExists.seguridad = validateUser()
+  userExists.seguridad = verificarUser(userExists)
 
   const userUpdated = await User.update(userId, userExists)
 
@@ -273,7 +257,7 @@ const resetPassword = async (req) => {
     return createResponse(false, data, 'Error obteniendo el usuario', 400)
   }
 
-  userExists.seguridad = validateUser()
+  userExists.seguridad = passwordReset(userExists)
   const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
   userExists.password = passwordHash
 
@@ -281,8 +265,7 @@ const resetPassword = async (req) => {
 
   data = {
     id: userId,
-    email: userUpdated.email,
-    verificado: userUpdated.seguridad.verificado
+    email: userUpdated.email
   }
 
   return createResponse(true, data, null, 200)
@@ -302,15 +285,17 @@ const forgotPassword = async (req) => {
     return createResponse(false, data, 'Error obteniendo el usuario', 400)
   }
 
-  userExists.seguridad = buildForgotPassword()
+  userExists.seguridad = buildForgotPassword(userExists)
 
-  User.update(userExists._id, userExists)
-  /* await sendForgotPasswordMail(User.update(userExists._id, userExists)) */
+  const userUpdated = await User.update(userExists._id, userExists)
+  await sendForgotPasswordMail(userUpdated)
   console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/reset/password/${userExists._id}/${userExists.seguridad?.cryptoToken}`)
 
   data = {
-    email,
-    restaurarPassword: userExists.seguridad.restaurarPassword
+    msg: 'Ha olvidado su password',
+    method: 'PUT',
+    body: 'password',
+    endpoint: `${process.env.DEV_HOST}:${process.env.PORT}/api/user/reset/password/${userUpdated._id}/${userUpdated.seguridad?.cryptoToken}`
   }
 
   return createResponse(true, data, null, 200)

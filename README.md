@@ -71,7 +71,7 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 - PATCH (/api/user/uploadPhoto) con una imagen en la peticion tipo files
 
-- GET (/user/verify/email/:userId/:cryptoToken) donde verificaremos al usuario
+- GET (/user/verify/email/:userId/:cryptoToken) donde verificaremos al usuario (se envia por email)
 
 - PATCH (/api/user) con el token por el header _Authorization_ y un body del siguiente estilo (ningun campo es obligatorio)
 
@@ -83,10 +83,22 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
           "password": "pruebecita"
       }
 
+- POST (/api/user/forgot/password) con el email en el body para resetear la nueva password
+
+      {
+          "email": "email@gmail.com"
+      }
+
+- PUT (/api/user/reset/password/:userId/:cryptoToken) con la nueva password en el body para cambiar a la nueva que queremos _(esta url se mandará en el anterior endpoint para que el front haga esta peticion con la nueva contraseña del usuario)_
+
+      {
+          "password": "nuevaPassword123"
+      }
+
 ## Verificación de token
 
 En las rutas que requieran validacion de token, importaremos lo siguiente _const tokenValidator = require('../middlewares/tokenValidator')_ y lo añadiremos como middleware a la peticion
 
 ## Verificación de email
 
-A través del servicio de nodemailer, enviaremos un correo al usuario para que verifique el email (ahora no activo ya que no conecta con el servidor de correo, pero si pintamos por consola la url a la que hacer GET) con el endpoint de verify/email. Si el usuario no ha verificado pasadas las 12h, se vuelve a iniciar el proceso de verificación, con nuevo correo (nueva url con nuevo cryptoToken)
+A través del servicio de nodemailer, enviaremos un correo al usuario para que verifique el email con el endpoint de verify/email. Si el usuario no ha verificado pasada una hora, se vuelve a iniciar el proceso de verificación, con nuevo correo (nueva url con nuevo cryptoToken)
