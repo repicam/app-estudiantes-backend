@@ -4,8 +4,12 @@ const User = require('../models/User')
 const { createResponse } = require('../utils/responseGenerator')
 const { signToken } = require('../utils/jwtOperations')
 const { uploadImage, deleteTempImage, deleteImageCloud } = require('../utils/imageManager')
+const { initUserSeguridad, verificarUser, buildForgotPassword, passwordReset } = require('../utils/verificationManager')
+const { sendVerificationMail, sendForgotPasswordMail } = require('../utils/emailTransporter')
 
 const SALT_ROUNDS = 10
+
+const MSG_NO_VERIFICADO = 'Debe verificar la cuenta. Revise su correo'
 
 const registroUsuario = async (req) => {
   let data = null
@@ -24,8 +28,10 @@ const registroUsuario = async (req) => {
     return createResponse(false, data, 'Email y/o username ya existe. Pruebe a iniciar sesión', 400)
   }
   const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
+
   const userData = req.body
   userData.password = passwordHash
+  userData.seguridad = initUserSeguridad()
 
   const createdUser = await User.create(userData)
 
@@ -33,6 +39,9 @@ const registroUsuario = async (req) => {
     id: createdUser._id,
     name
   }
+
+  await sendVerificationMail(createdUser)
+  console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/verify/email/${createdUser._id}/${createdUser.seguridad?.cryptoToken}`)
 
   const token = signToken(userToken)
 
@@ -86,6 +95,18 @@ const loginUsuario = async (req) => {
     if (!bcrypt.compareSync(password, userDB.password)) {
       return createResponse(false, null, 'email o password incorrecto', 401)
     }
+
+    const isTiempoExpirado = userDB.seguridad?.expirateTime
+      ? new Date().getTime() > userDB.seguridad?.expirateTime
+      : true
+
+    if (!userDB.seguridad?.verificado) {
+      return await verificarSeguridadUsuario(userDB, isTiempoExpirado)
+    } else if (userDB.seguridad?.restaurarPassword) {
+      userDB.seguridad = passwordReset(userDB)
+      await User.update(userDB._id, userDB)
+    }
+
     const userToken = {
       id: userDB._id,
       name: userDB.name
@@ -101,6 +122,19 @@ const loginUsuario = async (req) => {
     return createResponse(true, data, null, 200)
   }
   return createResponse(false, null, 'email o password incorrecto', 401)
+}
+
+async function verificarSeguridadUsuario (user, isTiempoExpirado) {
+  if (!isTiempoExpirado) {
+    return createResponse(false, null, MSG_NO_VERIFICADO, 400)
+  } else {
+    user.seguridad = initUserSeguridad()
+    const userUpdated = await User.update(user._id, user)
+    await sendVerificationMail(userUpdated)
+
+    console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/verify/email/${user._id}/${user.seguridad?.cryptoToken}`)
+    return createResponse(false, null, MSG_NO_VERIFICADO, 400)
+  }
 }
 
 const subirFotoUsuario = async (req) => {
@@ -145,4 +179,135 @@ const subirFotoUsuario = async (req) => {
   return createResponse(true, data, null, 201)
 }
 
-module.exports = { registroUsuario, renovarToken, loginUsuario, subirFotoUsuario }
+const verificarEmail = async (req) => {
+  let data = null
+  const { userId, cryptoToken } = req.params
+
+  const userExists = await User.find({ _id: userId, 'seguridad.cryptoToken': cryptoToken })
+
+  if (!userExists) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  userExists.seguridad = verificarUser(userExists)
+
+  const userUpdated = await User.update(userId, userExists)
+
+  data = {
+    id: userId,
+    username: userUpdated.username,
+    verificado: userUpdated.seguridad.verificado
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+const modificarUsuario = async (req) => {
+  let data = null
+
+  const { userId, body } = req
+  const { username, name, password } = body
+
+  const userExists = await User.findById(userId)
+
+  if (!userExists) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  const usernameExists = await User.find({ username })
+
+  if (userExists.username !== username && usernameExists) {
+    return createResponse(false, data, 'Username ya en uso', 400)
+  }
+  const passwordHash = password ? await bcrypt.hash(password, SALT_ROUNDS) : userExists.password
+
+  userExists.username = username || userExists.username
+  userExists.name = name || userExists.name
+  userExists.password = passwordHash
+
+  const userUpdated = await User.update(userId, userExists)
+
+  data = {
+    imagen: userUpdated.imagen.secure_url,
+    id: userUpdated._id,
+    name: userUpdated.name,
+    username: userUpdated.username
+  }
+
+  return createResponse(true, data, null, 201)
+}
+
+const resetPassword = async (req) => {
+  let data = null
+  const { params, body } = req
+  const { userId, cryptoToken } = params
+  const { password } = body
+
+  if (!password) {
+    return createResponse(false, data, 'Debe informar la nueva contraseña', 400)
+  }
+
+  const userExists = await User.find({
+    _id: userId,
+    'seguridad.cryptoToken': cryptoToken,
+    'seguridad.restaurarPassword': true
+  })
+
+  if (!userExists) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  userExists.seguridad = passwordReset(userExists)
+  const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
+  userExists.password = passwordHash
+
+  const userUpdated = await User.update(userId, userExists)
+
+  data = {
+    id: userId,
+    email: userUpdated.email
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+const forgotPassword = async (req) => {
+  let data = null
+  const { email } = req.body
+
+  if (!email) {
+    return createResponse(false, data, 'Debe informar el email para recuperar la contraseña', 400)
+  }
+
+  const userExists = await User.find({ email })
+
+  if (!userExists) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  userExists.seguridad = buildForgotPassword(userExists)
+
+  const userUpdated = await User.update(userExists._id, userExists)
+  await sendForgotPasswordMail(userUpdated)
+  console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/reset/password/${userExists._id}/${userExists.seguridad?.cryptoToken}`)
+
+  data = {
+    msg: 'Ha olvidado su password',
+    method: 'PUT',
+    body: 'password',
+    endpoint: `${process.env.DEV_HOST}:${process.env.PORT}/api/user/reset/password/${userUpdated._id}/${userUpdated.seguridad?.cryptoToken}`
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+module.exports = {
+  registroUsuario,
+  renovarToken,
+  loginUsuario,
+  subirFotoUsuario,
+  verificarEmail,
+  modificarUsuario,
+  resetPassword,
+  forgotPassword
+}
