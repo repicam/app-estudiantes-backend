@@ -1,5 +1,5 @@
 const buildHostName = (request) => {
-  return request.hotsname !== 'localhost' ? request.hotsname : request.hotsname + `:${process.env.PORT}`
+  return request.hostname !== 'localhost' ? request.hostname : request.hostname + `:${process.env.PORT}`
 }
 
 module.exports = buildHostName
