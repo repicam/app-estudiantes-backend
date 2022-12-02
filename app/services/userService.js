@@ -6,6 +6,7 @@ const { signToken } = require('../utils/jwtOperations')
 const { uploadImage, deleteTempImage, deleteImageCloud } = require('../utils/imageManager')
 const { initUserSeguridad, verificarUser, buildForgotPassword, passwordReset } = require('../utils/verificationManager')
 const { sendVerificationMail, sendForgotPasswordMail } = require('../utils/emailTransporter')
+const buildHostName = require('../utils/hostManager')
 
 const SALT_ROUNDS = 10
 
@@ -40,8 +41,8 @@ const registroUsuario = async (req) => {
     name
   }
 
-  await sendVerificationMail(createdUser)
-  console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/verify/email/${createdUser._id}/${createdUser.seguridad?.cryptoToken}`)
+  await sendVerificationMail(createdUser, buildHostName(req))
+  console.log(`${buildHostName(req)}/api/user/verify/email/${createdUser._id}/${createdUser.seguridad?.cryptoToken}`)
 
   const token = signToken(userToken)
 
@@ -101,7 +102,7 @@ const loginUsuario = async (req) => {
       : true
 
     if (!userDB.seguridad?.verificado) {
-      return await verificarSeguridadUsuario(userDB, isTiempoExpirado)
+      return await verificarSeguridadUsuario(userDB, isTiempoExpirado, req)
     } else if (userDB.seguridad?.restaurarPassword) {
       userDB.seguridad = passwordReset(userDB)
       await User.update(userDB._id, userDB)
@@ -124,15 +125,13 @@ const loginUsuario = async (req) => {
   return createResponse(false, null, 'email o password incorrecto', 401)
 }
 
-async function verificarSeguridadUsuario (user, isTiempoExpirado) {
+async function verificarSeguridadUsuario (user, isTiempoExpirado, request) {
   if (!isTiempoExpirado) {
     return createResponse(false, null, MSG_NO_VERIFICADO, 400)
   } else {
     user.seguridad = initUserSeguridad()
     const userUpdated = await User.update(user._id, user)
-    await sendVerificationMail(userUpdated)
-
-    console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/verify/email/${user._id}/${user.seguridad?.cryptoToken}`)
+    await sendVerificationMail(userUpdated, buildHostName(request))
     return createResponse(false, null, MSG_NO_VERIFICADO, 400)
   }
 }
@@ -295,7 +294,7 @@ const forgotPassword = async (req) => {
     msg: 'Ha olvidado su password',
     method: 'PUT',
     body: 'password',
-    endpoint: `${process.env.DEV_HOST}:${process.env.PORT}/api/user/reset/password/${userUpdated._id}/${userUpdated.seguridad?.cryptoToken}`
+    endpoint: `${buildHostName(req)}/api/user/reset/password/${userUpdated._id}/${userUpdated.seguridad?.cryptoToken}`
   }
 
   return createResponse(true, data, null, 200)
