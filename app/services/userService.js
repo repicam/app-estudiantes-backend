@@ -41,7 +41,7 @@ const registroUsuario = async (req) => {
     name
   }
 
-  await sendVerificationMail(createdUser)
+  await sendVerificationMail(createdUser, buildHostName(req))
   console.log(`${buildHostName(req)}/api/user/verify/email/${createdUser._id}/${createdUser.seguridad?.cryptoToken}`)
 
   const token = signToken(userToken)
