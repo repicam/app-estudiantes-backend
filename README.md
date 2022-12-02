@@ -55,6 +55,8 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 - GET (/api/curso/:id) con el token por el header _Authorization_ y retorna el curso si es del usuario y el userId
 
+- DELETE (/api/curso/:id) con el token por el header _Authorization_ y el userId si ha sido eliminado y error si no ha podido eliminarse
+
 ### ToDos
 
 - POST (/api/toDo) con el token por el header _Authorization_ y un body del siguiente estilo

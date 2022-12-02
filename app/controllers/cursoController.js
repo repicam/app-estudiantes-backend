@@ -42,4 +42,18 @@ const getCursoById = async (req, res, next) => {
   }
 }
 
-module.exports = { crearCurso, getCursos, getCursoById }
+const eliminarCurso = async (req, res, next) => {
+  try {
+    const { success, data, errorMsg, statusCode } = await cursoService.eliminarCurso(req)
+    const response = {
+      success,
+      data,
+      errorMsg
+    }
+    res.status(statusCode).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { crearCurso, getCursos, getCursoById, eliminarCurso }

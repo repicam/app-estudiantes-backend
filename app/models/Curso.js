@@ -40,4 +40,8 @@ const find = async (data) => {
   return await Curso.find(data)
 }
 
-module.exports = { create, find }
+const deleteOne = async (data) => {
+  return await Curso.deleteOne(data)
+}
+
+module.exports = { create, find, deleteOne }

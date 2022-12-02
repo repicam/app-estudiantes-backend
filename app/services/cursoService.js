@@ -92,4 +92,29 @@ const getCursoById = async (req) => {
   return createResponse(true, data, null, 200)
 }
 
-module.exports = { crearCurso, getCursos, getCursoById }
+const eliminarCurso = async (req) => {
+  let data = null
+
+  const { userId, params } = req
+  const { id } = params
+
+  const user = await User.findById(userId)
+
+  if (!user) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  const cursoEliminado = await Curso.deleteOne({ _id: id, user: userId })
+
+  if (!cursoEliminado.deletedCount) {
+    return createResponse(false, data, 'Error eliminando el curso', 400)
+  }
+
+  data = {
+    userId
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+module.exports = { crearCurso, getCursos, getCursoById, eliminarCurso }

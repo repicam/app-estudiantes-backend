@@ -9,5 +9,6 @@ router.route('/').post(cursoValidator, tokenValidator, cursoController.crearCurs
   .get(tokenValidator, cursoController.getCursos)
 
 router.route('/:id').get(tokenValidator, cursoController.getCursoById)
+  .delete(tokenValidator, cursoController.eliminarCurso)
 
 module.exports = router
