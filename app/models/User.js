@@ -43,6 +43,10 @@ const userSchema = new Schema({
   toDos: [{
     type: Schema.Types.ObjectId,
     ref: 'Todo'
+  }],
+  searches: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Search'
   }]
 })
 
@@ -60,7 +64,7 @@ const find = async (data) => {
 }
 
 const findById = async (id) => {
-  return await User.findById(id).populate('cursos').populate('toDos')
+  return await User.findById(id).populate('cursos').populate('toDos').populate('searches')
 }
 
 const create = async (newUserData) => {
@@ -84,4 +88,9 @@ const update = async (id, newUserData) => {
   return await User.findByIdAndUpdate(id, newUserData, { new: true })
 }
 
-module.exports = { find, findById, create, saveCursoIntoUser, saveToDoIntoUser, update }
+const saveSearchIntoUser = async (search, user) => {
+  user.searches = user.searches.concat(search._id)
+  await user.save()
+}
+
+module.exports = { find, findById, create, saveCursoIntoUser, saveToDoIntoUser, update, saveSearchIntoUser }

@@ -42,4 +42,8 @@ const modificarUsuarioValidator = [
   body('username').optional({ nullable: true }).isString().withMessage('Username incorrecto')
 ]
 
-module.exports = { registroValidator, cursoValidator, loginValidator, todoValidator, modificarUsuarioValidator }
+const guardarBusquedaValidator = [
+  body('busqueda').trim().not().isEmpty().isString().withMessage('Busqueda incorrecto')
+]
+
+module.exports = { registroValidator, cursoValidator, loginValidator, todoValidator, modificarUsuarioValidator, guardarBusquedaValidator }
