@@ -97,6 +97,18 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
           "password": "nuevaPassword123"
       }
 
+### Historico busquedas
+
+- POST (/api/historico/busqueda) con el token por el header _Authorization_ y un body del siguiente estilo
+
+      {
+          "busqueda": "Pruebaaa"
+      }
+
+- GET (/api/historico/busqueda) con el token por el header _Authorization_ y retorna un arreglo con todas busquedas del usuario, ordenadas por mas recientes, y el userId
+
+- GET (/api/historico/busqueda?limit=2) con el token por el header _Authorization_ y retorna un arreglo con las 2 últimas busquedas del usuario, ordenadas por mas recientes, y el userId. En el _query parameter_ limit, se puede poner la cantidad que queremos limitar los registros a obtener
+
 ## Verificación de token
 
 En las rutas que requieran validacion de token, importaremos lo siguiente _const tokenValidator = require('../middlewares/tokenValidator')_ y lo añadiremos como middleware a la peticion
