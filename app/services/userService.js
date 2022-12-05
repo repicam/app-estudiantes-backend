@@ -20,7 +20,7 @@ const registroUsuario = async (req) => {
     return createResponse(false, data, errors.array(), 400)
   }
 
-  const { name, username, email, password } = req.body
+  const { username, email, password } = req.body
 
   const usernameExists = await User.find({ username })
   const emailExists = await User.find({ email })
@@ -36,22 +36,12 @@ const registroUsuario = async (req) => {
 
   const createdUser = await User.create(userData)
 
-  const userToken = {
-    id: createdUser._id,
-    name
-  }
-
   await sendVerificationMail(createdUser, buildHostName(req))
   console.log(`${buildHostName(req)}/api/user/verify/email/${createdUser._id}/${createdUser.seguridad?.cryptoToken}`)
 
-  const token = signToken(userToken)
-
   data = {
-    token,
-    id: createdUser._id,
-    name,
-    username,
-    imagen: createdUser.imagen.secure_url
+    message: 'Registrado correctamente. ' + MSG_NO_VERIFICADO,
+    id: createdUser._id
   }
 
   return createResponse(true, data, null, 201)
