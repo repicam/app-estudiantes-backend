@@ -51,18 +51,25 @@ function setFechaByEstado (cursoData) {
   return cursoData
 }
 const actualizarCurso = async (req) => {
-  const data = null
-
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
-    return createResponse(false, data, errors.array(), 400)
+    return createResponse(false, null, errors.array(), 400)
   }
   const id = req.params.id
-  const cursoExists = await Curso.findById(id)
+  let cursoExists = await Curso.findById(id)
   if (!cursoExists) {
-    return createResponse(false, data, 'Error actualizando el usuario', 400)
+    return createResponse(false, null, 'Error actualizando el curso', 400)
   }
-
+  const { titulo, descripcion, estado } = req.body
+  cursoExists.titulo = titulo || cursoExists.titulo
+  cursoExists.descripcion = descripcion || cursoExists.descripcion
+  cursoExists.estado = estado || cursoExists.estado
+  cursoExists = setFechaByEstado(cursoExists)
+  const cursoUpdate = await Curso.findByIdAndUpdate(id, cursoExists)
+  const data = {
+    userId: cursoUpdate.user,
+    curso: cursoUpdate
+  }
   return createResponse(true, data, null, 201)
 }
 
@@ -107,4 +114,29 @@ const getCursoById = async (req) => {
   return createResponse(true, data, null, 200)
 }
 
-module.exports = { crearCurso, getCursos, getCursoById, actualizarCurso }
+const eliminarCurso = async (req) => {
+  let data = null
+
+  const { userId, params } = req
+  const { id } = params
+
+  const user = await User.findById(userId)
+
+  if (!user) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  const cursoEliminado = await Curso.deleteOne({ _id: id, user: userId })
+
+  if (!cursoEliminado.deletedCount) {
+    return createResponse(false, data, 'Error eliminando el curso', 400)
+  }
+
+  data = {
+    userId
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+module.exports = { crearCurso, getCursos, getCursoById, eliminarCurso, actualizarCurso }

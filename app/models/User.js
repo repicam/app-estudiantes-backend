@@ -20,6 +20,22 @@ const userSchema = new Schema({
     minlength: 6,
     required: true
   },
+  imagen: {
+    public_id: {
+      type: String,
+      default: null
+    },
+    secure_url: {
+      type: String,
+      default: 'https://res.cloudinary.com/app-estudiantes/image/upload/v1669534655/default_user_photo.png'
+    }
+  },
+  seguridad: {
+    verificado: Boolean,
+    cryptoToken: String,
+    expirateTime: Date,
+    restaurarPassword: Boolean
+  },
   cursos: [{
     type: Schema.Types.ObjectId,
     ref: 'Curso'
@@ -27,6 +43,10 @@ const userSchema = new Schema({
   toDos: [{
     type: Schema.Types.ObjectId,
     ref: 'Todo'
+  }],
+  searches: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Search'
   }]
 })
 
@@ -44,7 +64,7 @@ const find = async (data) => {
 }
 
 const findById = async (id) => {
-  return await User.findById(id).populate('cursos').populate('todos')
+  return await User.findById(id).populate('cursos').populate('toDos').populate('searches')
 }
 
 const create = async (newUserData) => {
@@ -64,4 +84,13 @@ const saveToDoIntoUser = async (todo, user) => {
   await user.save()
 }
 
-module.exports = { find, findById, create, saveCursoIntoUser, saveToDoIntoUser }
+const update = async (id, newUserData) => {
+  return await User.findByIdAndUpdate(id, newUserData, { new: true })
+}
+
+const saveSearchIntoUser = async (search, user) => {
+  user.searches = user.searches.concat(search._id)
+  await user.save()
+}
+
+module.exports = { find, findById, create, saveCursoIntoUser, saveToDoIntoUser, update, saveSearchIntoUser }

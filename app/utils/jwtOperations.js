@@ -8,7 +8,8 @@ const signToken = (userToken) => {
 }
 
 const verifyToken = (request) => {
-  const token = request.headers.authorization?.split(' ')[1]
+  const authorization = request.headers.authorization?.toLowerCase().startsWith('bearer ')
+  const token = authorization ? request.headers.authorization?.split(' ')[1] : null
   const payload = jwt.verify(token, process.env.JWT_SECRET_KEY)
   request.userName = payload.name
   request.userId = payload.id

@@ -11,9 +11,9 @@ const crearTodo = async (req) => {
     return createResponse(false, data, errors.array(), 400)
   }
 
-  const { id, body } = req
+  const { userId, body } = req
 
-  const userExists = await User.find({ id })
+  const userExists = await User.findById(userId)
 
   if (!userExists) {
     return createResponse(false, data, 'Error obteniendo el usuario', 400)

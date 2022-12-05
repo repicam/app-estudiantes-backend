@@ -35,7 +35,7 @@ const create = async (newCursoData) => {
   const curso = await newCurso.save()
   return curso
 }
-const findById = async ({ id }) => {
+const findById = async (id) => {
   const curso = await Curso.findById(id)
   return curso
 }
@@ -44,4 +44,12 @@ const find = async (data) => {
   return await Curso.find(data)
 }
 
-module.exports = { create, findById, find }
+const findByIdAndUpdate = async (id, newCursoData) => {
+  return await Curso.findByIdAndUpdate(id, newCursoData, { new: true })
+}
+
+const deleteOne = async (data) => {
+  return await Curso.deleteOne(data)
+}
+
+module.exports = { create, find, deleteOne, findById, findByIdAndUpdate }

@@ -1,4 +1,4 @@
-const { body, param } = require('express-validator')
+const { body } = require('express-validator')
 
 const registroValidator = [
   body('email').trim().not().isEmpty().withMessage('Email es obligatorio')
@@ -33,6 +33,17 @@ const cursoValidator = [
     .isString().isIn(['PH', 'EP', 'FZ']).withMessage('Estado incorrecto')
 ]
 
-const paramCursoValidator = [param('id').isInt().withMessage('id debe ser entero')]
+const modificarUsuarioValidator = [
+  body('password').optional({ nullable: true }).isString().withMessage('Password incorrecto')
+    .isLength({ min: 6 }).withMessage('Password debe tener al menos 6 caracteres'),
 
-module.exports = { registroValidator, cursoValidator, loginValidator, todoValidator, paramCursoValidator }
+  body('name').optional({ nullable: true }).isString().withMessage('Name incorrecto'),
+
+  body('username').optional({ nullable: true }).isString().withMessage('Username incorrecto')
+]
+
+const guardarBusquedaValidator = [
+  body('busqueda').trim().not().isEmpty().isString().withMessage('Busqueda incorrecto')
+]
+
+module.exports = { registroValidator, cursoValidator, loginValidator, todoValidator, modificarUsuarioValidator, guardarBusquedaValidator }
