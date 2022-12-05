@@ -278,7 +278,7 @@ const forgotPassword = async (req) => {
 
   const userUpdated = await User.update(userExists._id, userExists)
   await sendForgotPasswordMail(userUpdated)
-  console.log(`${process.env.DEV_HOST}:${process.env.PORT}/api/user/reset/password/${userExists._id}/${userExists.seguridad?.cryptoToken}`)
+  console.log(`${buildHostName(req)}/api/user/reset/password/${userExists._id}/${userExists.seguridad?.cryptoToken}`)
 
   data = {
     msg: 'Ha olvidado su password',
