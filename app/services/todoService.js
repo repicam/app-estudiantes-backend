@@ -29,4 +29,26 @@ const crearTodo = async (req) => {
   return createResponse(true, data, null, 201)
 }
 
-module.exports = { crearTodo }
+const actualizarTodo = async (req) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return createResponse(false, null, errors.array(), 400)
+  }
+  const id = req.params.id
+  let todoExists = await Todo.findById(id)
+  if (!todoExists) {
+    return createResponse(false, null, 'Error actualizando el toDo', 400)
+  }
+  const { title, description, completed } = req.body
+  todoExists.title = title || todoExists.title
+  todoExists.description = description || todoExists.description
+  todoExists.completed = completed || todoExists.completed
+  const todoUpdate = await Todo.findByIdAndUpdate(id, todoExists)
+  const data = {
+    userId: todoUpdate.user,
+    curso: todoUpdate
+  }
+  return createResponse(true, data, null, 201)
+}
+
+module.exports = { crearTodo, actualizarTodo }
