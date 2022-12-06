@@ -33,7 +33,6 @@ const userSchema = new Schema({
   seguridad: {
     verificado: Boolean,
     cryptoToken: String,
-    expirateTime: Date,
     restaurarPassword: Boolean
   },
   cursos: [{

@@ -101,7 +101,7 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
           "email": "email@gmail.com"
       }
 
-- PUT (/api/user/reset/password/:userId/:cryptoToken) con la nueva password en el body para cambiar a la nueva que queremos _(esta url se mandará en el anterior endpoint para que el front haga esta peticion con la nueva contraseña del usuario)_
+- PUT (/api/user/reset/password/:userId/:cryptoToken) con la nueva password en el body para cambiar a la nueva que queremos
 
       {
           "password": "nuevaPassword123"
