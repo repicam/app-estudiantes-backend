@@ -35,7 +35,7 @@ const actualizarTodo = async (req) => {
     return createResponse(false, null, errors.array(), 400)
   }
   const id = req.params.id
-  let todoExists = await Todo.findById(id)
+  const todoExists = await Todo.findById(id)
   if (!todoExists) {
     return createResponse(false, null, 'Error actualizando el toDo', 400)
   }
