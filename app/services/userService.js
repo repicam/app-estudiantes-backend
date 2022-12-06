@@ -5,7 +5,7 @@ const { createResponse } = require('../utils/responseGenerator')
 const { signToken } = require('../utils/jwtOperations')
 const { uploadImage, deleteTempImage, deleteImageCloud } = require('../utils/imageManager')
 const { initUserSeguridad, verificarUser, buildForgotPassword, passwordReset } = require('../utils/verificationManager')
-const { sendVerificationMail, sendForgotPasswordMail } = require('../utils/emailTransporter')
+const { sendVerificationMail, sendForgotPasswordMail, sendChangedPasswordMail } = require('../utils/emailTransporter')
 const buildHostName = require('../utils/hostManager')
 
 const SALT_ROUNDS = 10
@@ -83,19 +83,16 @@ const loginUsuario = async (req) => {
   const { email, password } = req.body
   const userDB = await User.find({ email })
   if (userDB) {
+    if (userDB.seguridad?.restaurarPassword) {
+      return createResponse(false, null, 'Se ha solicitado un cambio de password y debe terminar el proceso', 400)
+    }
+
     if (!bcrypt.compareSync(password, userDB.password)) {
       return createResponse(false, null, 'email o password incorrecto', 401)
     }
 
-    const isTiempoExpirado = userDB.seguridad?.expirateTime
-      ? new Date().getTime() > userDB.seguridad?.expirateTime
-      : true
-
     if (!userDB.seguridad?.verificado) {
-      return await verificarSeguridadUsuario(userDB, isTiempoExpirado, req)
-    } else if (userDB.seguridad?.restaurarPassword) {
-      userDB.seguridad = passwordReset(userDB)
-      await User.update(userDB._id, userDB)
+      return createResponse(false, null, MSG_NO_VERIFICADO, 400)
     }
 
     const userToken = {
@@ -113,17 +110,6 @@ const loginUsuario = async (req) => {
     return createResponse(true, data, null, 200)
   }
   return createResponse(false, null, 'email o password incorrecto', 401)
-}
-
-async function verificarSeguridadUsuario (user, isTiempoExpirado, request) {
-  if (!isTiempoExpirado) {
-    return createResponse(false, null, MSG_NO_VERIFICADO, 400)
-  } else {
-    user.seguridad = initUserSeguridad()
-    const userUpdated = await User.update(user._id, user)
-    await sendVerificationMail(userUpdated, buildHostName(request))
-    return createResponse(false, null, MSG_NO_VERIFICADO, 400)
-  }
 }
 
 const subirFotoUsuario = async (req) => {
@@ -250,11 +236,12 @@ const resetPassword = async (req) => {
   const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
   userExists.password = passwordHash
 
-  const userUpdated = await User.update(userId, userExists)
+  await User.update(userId, userExists)
+
+  await sendChangedPasswordMail(userExists)
 
   data = {
-    id: userId,
-    email: userUpdated.email
+    msg: 'La password ha sido actualizada'
   }
 
   return createResponse(true, data, null, 200)
@@ -281,10 +268,9 @@ const forgotPassword = async (req) => {
   console.log(`${buildHostName(req)}/api/user/reset/password/${userExists._id}/${userExists.seguridad?.cryptoToken}`)
 
   data = {
-    msg: 'Ha olvidado su password',
-    method: 'PUT',
-    body: 'password',
-    endpoint: `${buildHostName(req)}/api/user/reset/password/${userUpdated._id}/${userUpdated.seguridad?.cryptoToken}`
+    msg: 'Ha solicitado cambiar la contraseña',
+    userId: userUpdated._id,
+    cryptoToken: userUpdated.seguridad?.cryptoToken
   }
 
   return createResponse(true, data, null, 200)
