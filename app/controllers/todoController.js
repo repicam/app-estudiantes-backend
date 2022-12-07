@@ -14,4 +14,18 @@ const crearTodo = async (req, res, next) => {
   }
 }
 
-module.exports = { crearTodo }
+const actualizarTodo = async (req, res, next) => {
+  try {
+    const { success, data, errorMsg, statusCode } = await todoService.actualizarTodo(req)
+    const response = {
+      success,
+      data,
+      errorMsg
+    }
+    res.status(statusCode).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { crearTodo, actualizarTodo }
