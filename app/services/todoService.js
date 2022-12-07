@@ -46,9 +46,9 @@ const actualizarTodo = async (req) => {
   const todoUpdate = await Todo.findByIdAndUpdate(id, todoExists)
   const data = {
     userId: todoUpdate.user,
-    curso: todoUpdate
+    todo: todoUpdate
   }
-  return createResponse(true, data, null, 201)
+  return createResponse(true, data, null, 200)
 }
 
 module.exports = { crearTodo, actualizarTodo }
