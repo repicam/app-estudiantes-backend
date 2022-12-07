@@ -269,7 +269,7 @@ const forgotPassword = async (req) => {
 
   data = {
     msg: 'Ha solicitado cambiar la contraseña',
-    userId: userUpdated._id,
+    id: userUpdated._id,
     cryptoToken: userUpdated.seguridad?.cryptoToken
   }
 
