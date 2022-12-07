@@ -8,7 +8,24 @@ module.exports = {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/ToDoBody'
+            type: 'object',
+            properties: {
+              titulo: {
+                type: 'string',
+                description: 'Titulo del ToDo',
+                example: 'JavaScript'
+              },
+              descripcion: {
+                type: 'string',
+                description: 'Descripción del ToDo',
+                example: 'Coding in JavaScript'
+              },
+              completado: {
+                type: 'boolean',
+                description: 'Estado del ToDo',
+                example: false
+              }
+            }
           }
         }
       }
@@ -19,7 +36,22 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ResponseOkToDos'
+              type: 'object',
+              properties: {
+                success: {
+                  type: 'boolean',
+                  description: 'Indicador peticion correcta',
+                  example: true
+                },
+                data: {
+                  $ref: '#/components/schemas/ToDo'
+                },
+                errorMsg: {
+                  type: 'string',
+                  description: 'Contiene el mensaje de error',
+                  example: null
+                }
+              }
             }
           }
         }
@@ -29,7 +61,24 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ResponseNonAuthorization'
+              type: 'object',
+              properties: {
+                success: {
+                  type: 'boolean',
+                  description: 'Indicador peticion correcta',
+                  example: false
+                },
+                data: {
+                  type: 'string',
+                  description: 'Contiene la data a devolver',
+                  example: null
+                },
+                errorMsg: {
+                  type: 'string',
+                  description: 'Contiene el mensaje de error',
+                  example: 'Tu petición no tiene cabecera de autorización o es incorrecta'
+                }
+              }
             }
           }
         }
@@ -39,7 +88,24 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ResponseUserError'
+              type: 'object',
+              properties: {
+                success: {
+                  type: 'boolean',
+                  description: 'Indicador peticion correcta',
+                  example: false
+                },
+                data: {
+                  type: 'string',
+                  description: 'Contiene la data a devolver',
+                  example: null
+                },
+                errorMsg: {
+                  type: 'string',
+                  description: 'Contiene el mensaje de error',
+                  example: 'Error obteniendo el usuario'
+                }
+              }
             }
           }
         }

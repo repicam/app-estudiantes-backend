@@ -8,7 +8,14 @@ module.exports = {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/UserPassword'
+            type: 'object',
+            properties: {
+              password: {
+                type: 'string',
+                description: 'Nueva password',
+                example: 'Nuev@Passw0rd'
+              }
+            }
           }
         }
       }
@@ -19,7 +26,29 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ResponseOkResetPassword'
+              type: 'object',
+              properties: {
+                success: {
+                  type: 'boolean',
+                  description: 'Indicador peticion correcta',
+                  example: true
+                },
+                data: {
+                  type: 'object',
+                  properties: {
+                    msg: {
+                      type: 'string',
+                      description: 'Información al usuario',
+                      example: 'La password ha sido actualizada'
+                    }
+                  }
+                },
+                errorMsg: {
+                  type: 'string',
+                  description: 'Contiene el mensaje de error',
+                  example: null
+                }
+              }
             }
           }
         }
@@ -29,7 +58,24 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ResponseUserError'
+              type: 'object',
+              properties: {
+                success: {
+                  type: 'boolean',
+                  description: 'Indicador peticion correcta',
+                  example: false
+                },
+                data: {
+                  type: 'string',
+                  description: 'Contiene la data a devolver',
+                  example: null
+                },
+                errorMsg: {
+                  type: 'string',
+                  description: 'Contiene el mensaje de error',
+                  example: 'Error obteniendo el usuario'
+                }
+              }
             }
           }
         }

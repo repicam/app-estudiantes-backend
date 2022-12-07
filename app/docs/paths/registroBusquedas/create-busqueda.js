@@ -8,7 +8,14 @@ module.exports = {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/components/schemas/SearchHistoryBody'
+            type: 'object',
+            properties: {
+              busqueda: {
+                type: 'string',
+                description: 'Búsqueda del usuario que registraremos',
+                example: 'JavaScript'
+              }
+            }
           }
         }
       }
@@ -19,7 +26,29 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ResponseOkCreateBusqueda'
+              type: 'object',
+              properties: {
+                success: {
+                  type: 'boolean',
+                  description: 'Indicador peticion correcta',
+                  example: true
+                },
+                data: {
+                  type: 'object',
+                  properties: {
+                    busqueda: {
+                      type: 'string',
+                      description: 'Búsqueda registrada',
+                      example: 'JavaScript'
+                    }
+                  }
+                },
+                errorMsg: {
+                  type: 'string',
+                  description: 'Contiene el mensaje de error',
+                  example: null
+                }
+              }
             }
           }
         }
@@ -29,7 +58,24 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ResponseNonAuthorization'
+              type: 'object',
+              properties: {
+                success: {
+                  type: 'boolean',
+                  description: 'Indicador peticion correcta',
+                  example: false
+                },
+                data: {
+                  type: 'string',
+                  description: 'Contiene la data a devolver',
+                  example: null
+                },
+                errorMsg: {
+                  type: 'string',
+                  description: 'Contiene el mensaje de error',
+                  example: 'Tu petición no tiene cabecera de autorización o es incorrecta'
+                }
+              }
             }
           }
         }
@@ -39,7 +85,24 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ResponseUserError'
+              type: 'object',
+              properties: {
+                success: {
+                  type: 'boolean',
+                  description: 'Indicador peticion correcta',
+                  example: false
+                },
+                data: {
+                  type: 'string',
+                  description: 'Contiene la data a devolver',
+                  example: null
+                },
+                errorMsg: {
+                  type: 'string',
+                  description: 'Contiene el mensaje de error',
+                  example: 'Error obteniendo el usuario'
+                }
+              }
             }
           }
         }

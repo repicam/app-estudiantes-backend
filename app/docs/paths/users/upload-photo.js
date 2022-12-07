@@ -8,7 +8,13 @@ module.exports = {
       content: {
         'multipart/form-data': {
           schema: {
-            $ref: '#/components/schemas/UserImage'
+            type: 'object',
+            properties: {
+              imagen: {
+                type: 'string',
+                format: 'binary'
+              }
+            }
           }
         }
       }
@@ -19,7 +25,44 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ResponseOkUsersBase'
+              type: 'object',
+              properties: {
+                success: {
+                  type: 'boolean',
+                  description: 'Indicador peticion correcta',
+                  example: true
+                },
+                data: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'string',
+                      description: 'Id del usuario que hace login',
+                      example: '6481ce39ee3c501fd24667ef'
+                    },
+                    name: {
+                      type: 'string',
+                      description: 'Nombre del usuario que hace login',
+                      example: 'Java Script'
+                    },
+                    username: {
+                      type: 'string',
+                      description: 'Username del usuario que hace login',
+                      example: 'JavaScriptCoder'
+                    },
+                    imagen: {
+                      type: 'string',
+                      description: 'Imagen de perfil del usuario que hace login',
+                      example: 'https://res.cloudinary.com/app-estudiantes/image/upload/v1669534655/default_user_photo.png'
+                    }
+                  }
+                },
+                errorMsg: {
+                  type: 'string',
+                  description: 'Contiene el mensaje de error',
+                  example: null
+                }
+              }
             }
           }
         }
@@ -29,7 +72,24 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ResponseNonAuthorization'
+              type: 'object',
+              properties: {
+                success: {
+                  type: 'boolean',
+                  description: 'Indicador peticion correcta',
+                  example: false
+                },
+                data: {
+                  type: 'string',
+                  description: 'Contiene la data a devolver',
+                  example: null
+                },
+                errorMsg: {
+                  type: 'string',
+                  description: 'Contiene el mensaje de error',
+                  example: 'Tu petición no tiene cabecera de autorización o es incorrecta'
+                }
+              }
             }
           }
         }
@@ -39,7 +99,24 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/ResponseUserError'
+              type: 'object',
+              properties: {
+                success: {
+                  type: 'boolean',
+                  description: 'Indicador peticion correcta',
+                  example: false
+                },
+                data: {
+                  type: 'string',
+                  description: 'Contiene la data a devolver',
+                  example: null
+                },
+                errorMsg: {
+                  type: 'string',
+                  description: 'Contiene el mensaje de error',
+                  example: 'Error obteniendo el usuario'
+                }
+              }
             }
           }
         }
