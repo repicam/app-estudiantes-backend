@@ -7,7 +7,7 @@ module.exports = {
     contact: {
       name: 'Ivan Repiso',
       email: 'irepisocamara@gmail.com',
-      url: 'https://github.com/repicam'
+      url: 'https://github.com/repicam/app-estudiantes-backend'
     }
   }
 }
