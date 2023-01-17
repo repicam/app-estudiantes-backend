@@ -58,8 +58,8 @@ const renovarToken = async (req) => {
   }
 
   const userToken = {
-    userId,
-    userName
+    id: userId,
+    name: userName
   }
 
   const token = signToken(userToken)
