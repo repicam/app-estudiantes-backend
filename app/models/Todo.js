@@ -44,4 +44,8 @@ const findByIdAndUpdate = async (id, newTodoData) => {
   return await Todo.findByIdAndUpdate(id, newTodoData, { new: true })
 }
 
-module.exports = { create, findById, findByIdAndUpdate }
+const deleteOne = async (data) => {
+  return await Todo.deleteOne(data)
+}
+
+module.exports = { create, findById, findByIdAndUpdate, deleteOne }
