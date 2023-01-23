@@ -35,19 +35,13 @@ const actualizarTodo = async (req) => {
   if (!errors.isEmpty()) {
     return createResponse(false, null, errors.array(), 400)
   }
-
   const { userId } = req
   const id = req.params.id
-  const todoExists = await Todo.findById(id)
-  const usuario = JSON.stringify(todoExists.user)
-  const creadorTodo = usuario.replace(/["]+/g, '')
 
-  if (userId !== creadorTodo) {
-    return createResponse(false, null, 'Error el to-do no pertenece al usuario ', 401)
-  }
+  const todoExists = await Todo.find({ _id: id, user: userId })
 
   if (!todoExists) {
-    return createResponse(false, null, 'Error actualizando el toDo', 400)
+    return createResponse(false, null, 'Error to-do no encontrado', 401)
   }
   const { titulo, descripcion, completado } = req.body
   todoExists.titulo = titulo || todoExists.titulo
@@ -66,32 +60,13 @@ const eliminarTodo = async (req) => {
   let data = null
 
   const { userId, params } = req
-  console.log('este es el userid', userId)
 
   const { id } = params
-
-  const todoExists = await Todo.findById(id)
-  if (!todoExists) {
-    return createResponse(false, null, 'Error obteniendo el to-do', 400)
-  }
-
-  const user = await User.findById(userId)
-
-  if (!user) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
-  }
-
-  const usuario = JSON.stringify(todoExists.user)
-  const creadorTodo = usuario.replace(/["]+/g, '')
-
-  if (userId !== creadorTodo) {
-    return createResponse(false, null, 'Error el to-do no pertenece al usuario', 401)
-  }
 
   const todoEliminado = await Todo.deleteOne({ _id: id, user: userId })
 
   if (!todoEliminado.deletedCount) {
-    return createResponse(false, data, 'Error eliminando el todo', 400)
+    return createResponse(false, data, 'Error to-do no encontrado', 400)
   }
 
   data = {
