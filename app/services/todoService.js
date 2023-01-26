@@ -35,21 +35,45 @@ const actualizarTodo = async (req) => {
   if (!errors.isEmpty()) {
     return createResponse(false, null, errors.array(), 400)
   }
+  const { userId } = req
   const id = req.params.id
-  const todoExists = await Todo.findById(id)
+
+  const todoExists = await Todo.find({ _id: id, user: userId })
+
   if (!todoExists) {
-    return createResponse(false, null, 'Error actualizando el toDo', 400)
+    return createResponse(false, null, 'Error to-do no encontrado', 401)
   }
-  const { title, description, completed } = req.body
-  todoExists.title = title || todoExists.title
-  todoExists.description = description || todoExists.description
-  todoExists.completed = completed || todoExists.completed
+  const { titulo, descripcion, completado } = req.body
+  todoExists.titulo = titulo || todoExists.titulo
+  todoExists.descripcion = descripcion || todoExists.descripcion
+  todoExists.completado = completado || todoExists.completado
   const todoUpdate = await Todo.findByIdAndUpdate(id, todoExists)
   const data = {
     userId: todoUpdate.user,
     todo: todoUpdate
   }
+
   return createResponse(true, data, null, 200)
 }
 
-module.exports = { crearTodo, actualizarTodo }
+const eliminarTodo = async (req) => {
+  let data = null
+
+  const { userId, params } = req
+
+  const { id } = params
+
+  const todoEliminado = await Todo.deleteOne({ _id: id, user: userId })
+
+  if (!todoEliminado.deletedCount) {
+    return createResponse(false, data, 'Error to-do no encontrado', 400)
+  }
+
+  data = {
+    userId
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+module.exports = { crearTodo, actualizarTodo, eliminarTodo }
