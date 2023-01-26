@@ -214,8 +214,9 @@ const modificarUsuario = async (req) => {
 
 const resetPassword = async (req) => {
   let data = null
-  const { params, body } = req
-  const { userId, cryptoToken } = params
+  const { headers, body } = req
+  const { userid, cryptotoken } = headers
+  console.log(userid)
   const { password } = body
 
   if (!password) {
@@ -223,8 +224,8 @@ const resetPassword = async (req) => {
   }
 
   const userExists = await User.find({
-    _id: userId,
-    'seguridad.cryptoToken': cryptoToken,
+    _id: userid,
+    'seguridad.cryptoToken': cryptotoken,
     'seguridad.restaurarPassword': true
   })
 
