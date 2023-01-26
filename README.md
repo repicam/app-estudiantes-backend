@@ -17,7 +17,7 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 ### Usuarios
 
-- POST (/api/registro) con un body del siguiente estilo
+- POST (/api/register) con un body del siguiente estilo
 
       {
           "username": "username",
@@ -41,7 +41,7 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 ### Cursos
 
-- POST (/api/curso) con el token por el header _Authorization_ y un body del siguiente estilo
+- POST (/api/course) con el token por el header _Authorization_ y un body del siguiente estilo
 
       {
           "titulo": "Pruebaaa",
@@ -51,13 +51,13 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
           "estado": "EP"
       }
 
-- GET (/api/curso) con el token por el header _Authorization_ y retorna un arreglo con todos los cursos del usuario y el userId
+- GET (/api/course) con el token por el header _Authorization_ y retorna un arreglo con todos los cursos del usuario y el userId
 
-- GET (/api/curso/:id) con el token por el header _Authorization_ y retorna el curso si es del usuario y el userId
+- GET (/api/course/:id) con el token por el header _Authorization_ y retorna el curso si es del usuario y el userId
 
-- DELETE (/api/curso/:id) con el token por el header _Authorization_ y el userId si ha sido eliminado y error si no ha podido eliminarse
+- DELETE (/api/course/:id) con el token por el header _Authorization_ y el userId si ha sido eliminado y error si no ha podido eliminarse
 
-- PATCH (/api/curso/:id) con el token por el header _Authorization_ y retorna el curso y el userId
+- PATCH (/api/course/:id) con el token por el header _Authorization_ y retorna el curso y el userId
 
         {
             "titulo": "Sexto",
@@ -121,15 +121,15 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 ### Historico busquedas
 
-- POST (/api/historico/busqueda) con el token por el header _Authorization_ y un body del siguiente estilo
+- POST (/api/historical/search) con el token por el header _Authorization_ y un body del siguiente estilo
 
       {
           "busqueda": "Pruebaaa"
       }
 
-- GET (/api/historico/busqueda) con el token por el header _Authorization_ y retorna un arreglo con todas busquedas del usuario, ordenadas por mas recientes, y el userId
+- GET (/api/historical/search) con el token por el header _Authorization_ y retorna un arreglo con todas busquedas del usuario, ordenadas por mas recientes, y el userId
 
-- GET (/api/historico/busqueda?limit=2) con el token por el header _Authorization_ y retorna un arreglo con las 2 últimas busquedas del usuario, ordenadas por mas recientes, y el userId. En el _query parameter_ limit, se puede poner la cantidad que queremos limitar los registros a obtener
+- GET (/api/historical/search?limit=2) con el token por el header _Authorization_ y retorna un arreglo con las 2 últimas busquedas del usuario, ordenadas por mas recientes, y el userId. En el _query parameter_ limit, se puede poner la cantidad que queremos limitar los registros a obtener
 
 ## Verificación de token
 
