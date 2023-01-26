@@ -41,4 +41,33 @@ const eliminarTodo = async (req, res, next) => {
     next(error)
   }
 }
-module.exports = { crearTodo, actualizarTodo, eliminarTodo }
+
+const obtenerTodos = async (req, res, next) => {
+  try {
+    const { success, data, errorMsg, statusCode } = await todoService.obtenerTodos(req)
+    const response = {
+      success,
+      data,
+      errorMsg
+    }
+    res.status(statusCode).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const obtenerTodosById = async (req, res, next) => {
+  try {
+    const { success, data, errorMsg, statusCode } = await todoService.obtenerTodosById(req)
+    const response = {
+      success,
+      data,
+      errorMsg
+    }
+    res.status(statusCode).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { crearTodo, actualizarTodo, eliminarTodo, obtenerTodos, obtenerTodosById }
