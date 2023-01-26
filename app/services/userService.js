@@ -216,7 +216,6 @@ const resetPassword = async (req) => {
   let data = null
   const { headers, body } = req
   const { userid, cryptotoken } = headers
-  console.log(userid)
   const { password } = body
 
   if (!password) {
@@ -237,7 +236,7 @@ const resetPassword = async (req) => {
   const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
   userExists.password = passwordHash
 
-  await User.update(userId, userExists)
+  await User.update(userExists._id, userExists)
 
   await sendChangedPasswordMail(userExists)
 
