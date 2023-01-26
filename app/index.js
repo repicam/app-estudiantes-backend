@@ -23,7 +23,7 @@ app.use(helmet())
 
 app.use('/api', userRoutes)
 app.use('/api/curso', cursoRoutes)
-app.use('/api/toDo', todoRoutes)
+app.use('/api/to-do', todoRoutes)
 app.use('/api/historico/busqueda', historicoBusquedaRoutes)
 app.use('/api/documentacion', swaggerUI.serve, swaggerUI.setup(docs))
 app.use(unknownEndpoint)

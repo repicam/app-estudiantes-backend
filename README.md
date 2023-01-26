@@ -69,15 +69,27 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 ### ToDos
 
-- POST (/api/toDo) con el token por el header _Authorization_ y un body del siguiente estilo
+- POST (/api/to-do) con el token por el header _Authorization_ y un body del siguiente estilo
 
       {
           "titulo": "Pruebaaa",
 
-          "descripcion": "Este curso es de prueba", //(opcional)
+          "descripcion": "Este todo es de prueba", //(opcional)
 
           "completado": true //(opcional)
       }
+
+- DELETE (/api/to-do/:id) con el token por el header _Authorization_ y el userId si ha sido eliminado y error si no ha podido eliminarse
+
+- PATCH (/api/to-do/:id) con el token por el header _Authorization_ y retorna el todo y el userId
+
+        {
+            "titulo": "Estudiar javascript",
+
+            "descripcion": "Aprender la función flecha en javascript" //(opcional)
+
+            "completado": false //(opcional)
+        }
 
 ### Modificar usuario
 
