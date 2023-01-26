@@ -20,19 +20,11 @@
   "homepage": "https://github.com/repicam/app-estudiantes-backend#readme",
   "dependencies": {
     "bcrypt": "^5.1.0",
-    "cloudinary": "^1.32.0",
     "cors": "^2.8.5",
-    "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "express-fileupload": "^1.4.0",
-    "express-validator": "^6.14.2",
-    "fs-extra": "^10.1.0",
-    "helmet": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.7.2",
-    "nodemailer": "^6.8.0",
-    "swagger-ui-express": "^4.6.0"
+    "mongoose": "^6.7.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.20",
