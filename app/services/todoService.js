@@ -56,6 +56,55 @@ const actualizarTodo = async (req) => {
   return createResponse(true, data, null, 200)
 }
 
+const obtenerTodos = async (req) => {
+  let data = null
+
+  const { userId, query } = req
+  const { completado } = query
+
+  const user = await User.findById(userId)
+
+  if (!user) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  if (!completado) {
+    data = {
+      userId,
+      todos: user.toDos
+    }
+  } else {
+    const todoCompleted = await Todo.find({ user: userId, completado })
+    data = {
+      userId,
+      todoCompleted
+    }
+  }
+
+  return createResponse(true, data, null, 200)
+}
+
+const obtenerTodosById = async (req) => {
+  let data = null
+
+  const { userId, params } = req
+  const { id } = params
+
+  const user = await User.findById(userId)
+
+  if (!user) {
+    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+  }
+
+  const todo = await Todo.find({ _id: id, user: userId })
+
+  data = {
+    userId,
+    todo
+  }
+
+  return createResponse(true, data, null, 200)
+}
 const eliminarTodo = async (req) => {
   let data = null
 
@@ -76,4 +125,4 @@ const eliminarTodo = async (req) => {
   return createResponse(true, data, null, 200)
 }
 
-module.exports = { crearTodo, actualizarTodo, eliminarTodo }
+module.exports = { crearTodo, actualizarTodo, obtenerTodos, obtenerTodosById, eliminarTodo }
