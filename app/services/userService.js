@@ -37,7 +37,6 @@ const registroUsuario = async (req) => {
   const createdUser = await User.create(userData)
 
   await sendVerificationMail(createdUser, buildHostName(req))
-  console.log(`${buildHostName(req)}/api/user/verify/email/${createdUser._id}/${createdUser.seguridad?.cryptoToken}`)
 
   data = {
     message: 'Registrado correctamente. ' + MSG_NO_VERIFICADO,
@@ -156,9 +155,9 @@ const subirFotoUsuario = async (req) => {
 
 const verificarEmail = async (req) => {
   let data = null
-  const { userId, cryptoToken } = req.params
+  const { cryptoToken } = req.params
 
-  const userExists = await User.find({ _id: userId, 'seguridad.cryptoToken': cryptoToken })
+  const userExists = await User.find({ 'seguridad.cryptoToken': cryptoToken })
 
   if (!userExists) {
     return createResponse(false, data, 'Error obteniendo el usuario', 400)
@@ -166,10 +165,10 @@ const verificarEmail = async (req) => {
 
   userExists.seguridad = verificarUser(userExists)
 
-  const userUpdated = await User.update(userId, userExists)
+  const userUpdated = await User.update(userExists._id, userExists)
 
   data = {
-    id: userId,
+    email: userUpdated.email,
     username: userUpdated.username,
     verificado: userUpdated.seguridad.verificado
   }
@@ -265,7 +264,6 @@ const forgotPassword = async (req) => {
 
   const userUpdated = await User.update(userExists._id, userExists)
   await sendForgotPasswordMail(userUpdated)
-  console.log(`${buildHostName(req)}/api/user/reset/password/${userExists._id}/${userExists.seguridad?.cryptoToken}`)
 
   data = {
     msg: 'Ha solicitado cambiar la contraseña',

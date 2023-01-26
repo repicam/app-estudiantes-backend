@@ -95,7 +95,7 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 
 - PATCH (/api/user/uploadPhoto) con una imagen en la peticion tipo files
 
-- GET (/user/verify/email/:userId/:cryptoToken) donde verificaremos al usuario (se envia por email)
+- GET (/user/verify/:cryptoToken) donde verificaremos al usuario (se envia por email)
 
 - PATCH (/api/user) con el token por el header _Authorization_ y un body del siguiente estilo (ningun campo es obligatorio)
 
