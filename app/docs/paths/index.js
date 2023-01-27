@@ -30,11 +30,11 @@ module.exports = {
       ...updateCurso,
       ...deleteCurso
     },
-    '/toDo': {
+    '/to-do': {
       ...getToDos,
       ...createToDo
     },
-    '/toDo/{id}': {
+    '/to-do/{id}': {
       ...getToDo,
       ...updateToDo,
       ...deleteToDo
