@@ -72,24 +72,32 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 - POST (/api/to-do) con el token por el header _Authorization_ y un body del siguiente estilo
 
       {
-          "titulo": "Pruebaaa",
+          "titulo": "Prueba",
 
-          "descripcion": "Este todo es de prueba", //(opcional)
+          "descripcion": "Este toDo es de prueba", //(opcional)
 
           "completado": true //(opcional)
       }
 
-- DELETE (/api/to-do/:id) con el token por el header _Authorization_ y el userId si ha sido eliminado y error si no ha podido eliminarse
+- GET (/api/to-do) con el token por el header _Authorization_  retorna un arreglo con el userId y todos los toDos del usuario 
 
-- PATCH (/api/to-do/:id) con el token por el header _Authorization_ y retorna el todo y el userId
+- GET (/api/to-do?completado=true) con el token por el header _Authorization_  retorna un arreglo con el userId y todos los toDos completados del usuario 
 
-        {
-            "titulo": "Estudiar javascript",
+- GET (/api/to-do?completado=false) con el token por el header _Authorization_  retorna un arreglo con  el userId y todos los toDos no completados del usuario
 
-            "descripcion": "Aprender la función flecha en javascript" //(opcional)
+- GET (/api/to-do/:id) con el token por el header _Authorization_ y el Id del toDo en la url  retorna un arreglo con el toDos buscado en caso que no exista retorna null
 
-            "completado": false //(opcional)
-        }
+- DELETE (/api/to-do/:id) con el token por el header _Authorization_ el Id del toDo en la url retorna true y el userId cuando fue eliminado exitosamente en caso contrario retorna error
+
+- PATCH (/api/to-do/:id) con el token por el header _Authorization_ el Id del toDo en la url  y las modificaciones en un  body del siguiente estilo
+
+    {
+    "titulo":"Esto es una actualizacion",   
+    "descripcion":"Estoy editando el toDo",
+    "completado": true
+    }
+
+retorna un arreglo con el toDo actualizado
 
 ### Modificar usuario
 
