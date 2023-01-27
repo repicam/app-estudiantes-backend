@@ -35,15 +35,18 @@ const create = async (newTodoData) => {
   return todo
 }
 
+const find = async (data) => {
+  return await Todo.find(data)
+}
+
+const findOne = async (data) => {
+  return await Todo.findOne(data)
+}
+
 const findById = async (id) => {
   const todo = await Todo.findById(id)
   return todo
 }
-
-const find = async (data) => {
-  return await Todo.findOne(data)
-}
-
 const findByIdAndUpdate = async (id, newTodoData) => {
   return await Todo.findByIdAndUpdate(id, newTodoData, { new: true })
 }
@@ -52,4 +55,4 @@ const deleteOne = async (data) => {
   return await Todo.deleteOne(data)
 }
 
-module.exports = { create, findById, find, findByIdAndUpdate, deleteOne }
+module.exports = { create, find, findOne, findById, findByIdAndUpdate, deleteOne }
