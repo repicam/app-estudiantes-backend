@@ -38,11 +38,12 @@ const actualizarTodo = async (req) => {
   const { userId } = req
   const id = req.params.id
 
-  const todoExists = await Todo.find({ _id: id, user: userId })
+  const todoExists = await Todo.findOne({ _id: id, user: userId })
 
   if (!todoExists) {
     return createResponse(false, null, 'Error to-do no encontrado', 401)
   }
+
   const { titulo, descripcion, completado } = req.body
   todoExists.titulo = titulo || todoExists.titulo
   todoExists.descripcion = descripcion || todoExists.descripcion
@@ -97,7 +98,6 @@ const obtenerTodosById = async (req) => {
   }
 
   const todo = await Todo.find({ _id: id, user: userId })
-
   data = {
     userId,
     todo

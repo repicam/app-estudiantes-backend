@@ -72,12 +72,32 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CL
 - POST (/api/toDo) con el token por el header _Authorization_ y un body del siguiente estilo
 
       {
-          "titulo": "Pruebaaa",
+          "titulo": "Prueba",
 
-          "descripcion": "Este curso es de prueba", //(opcional)
+          "descripcion": "Este toDo es de prueba", //(opcional)
 
           "completado": true //(opcional)
       }
+
+- GET (/api/toDo) con el token por el header _Authorization_  retorna un arreglo con el userId y todos los toDos del usuario 
+
+- GET (/api/toDo?completado=true) con el token por el header _Authorization_  retorna un arreglo con el userId y todos los toDos completados del usuario 
+
+- GET (/api/toDo?completado=false) con el token por el header _Authorization_  retorna un arreglo con  el userId y todos los toDos no completados del usuario
+
+- GET (/api/toDo/:id) con el token por el header _Authorization_ y el Id del toDo en la url  retorna un arreglo con el toDos buscado en caso que no exista retorna null
+
+- DELETE (/api/toDo/:id) con el token por el header _Authorization_ el Id del toDo en la url retorna true y el userId cuando fue eliminado exitosamente en caso contrario retorna error
+
+- PATCH (/api/toDo/:id) con el token por el header _Authorization_ el Id del toDo en la url  y las modificaciones en un  body del siguiente estilo
+
+    {
+    "titulo":"Esto es una actualizacion",   
+    "descripcion":"Estoy editando el toDo",
+    "completado": true
+    }
+
+retorna un arreglo con el toDo actualizado
 
 ### Modificar usuario
 
