@@ -5,7 +5,7 @@ module.exports = {
       description: 'Local server'
     },
     {
-      url: 'https://dev-app-estudiantes.up.railway.app/api',
+      url: 'https://app-estudiantes.up.railway.app/api',
       description: 'Railway server'
     }
   ]
