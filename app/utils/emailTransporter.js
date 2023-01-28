@@ -31,8 +31,8 @@ const sendForgotPasswordMail = async (user) => {
       from: process.env.EMAIL_ACCOUNT,
       to: user.email,
       subject: 'Reset Password Warning',
-      text: `Hello, ${user.username}. Este es un mensaje de información porque ha solicitado un cambio de contraseña.
-      Hasta que no la cambie, su cuenta quedará bloqueada`
+      text: `Hello, ${user.username}. This is an information message because you have requested a password change.
+      Until you change it, your account will be locked`
     })
 
     return await Transporter.sendMail(mailOptions)
@@ -48,7 +48,7 @@ const sendChangedPasswordMail = async (user) => {
       from: process.env.EMAIL_ACCOUNT,
       to: user.email,
       subject: 'Reset Password Info',
-      text: `Hello, ${user.username}. Este es un mensaje de confirmación del cambio de password`
+      text: `Hello, ${user.username}. This is a password change confirmation message`
     })
 
     return await Transporter.sendMail(mailOptions)

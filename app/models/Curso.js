@@ -1,20 +1,20 @@
 const { model, Schema } = require('mongoose')
 
 const cursoSchema = new Schema({
-  titulo: {
+  title: {
     type: String,
     required: true
   },
-  descripcion: {
+  description: {
     type: String,
     default: null
   },
-  estado: {
+  state: {
     type: String,
     required: true
   },
-  fechaInicio: Date,
-  fechaFin: Date,
+  startDate: Date,
+  finishDate: Date,
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'
@@ -27,29 +27,29 @@ cursoSchema.set('toJSON', {
   }
 })
 
-const Curso = model('Curso', cursoSchema)
+const Course = model('Course', cursoSchema)
 
 const create = async (newCursoData) => {
-  const newCurso = new Curso(newCursoData)
+  const newCurso = new Course(newCursoData)
 
   const curso = await newCurso.save()
   return curso
 }
 const findById = async (id) => {
-  const curso = await Curso.findById(id)
+  const curso = await Course.findById(id)
   return curso
 }
 
 const find = async (data) => {
-  return await Curso.find(data)
+  return await Course.find(data)
 }
 
 const findByIdAndUpdate = async (id, newCursoData) => {
-  return await Curso.findByIdAndUpdate(id, newCursoData, { new: true })
+  return await Course.findByIdAndUpdate(id, newCursoData, { new: true })
 }
 
 const deleteOne = async (data) => {
-  return await Curso.deleteOne(data)
+  return await Course.deleteOne(data)
 }
 
 module.exports = { create, find, deleteOne, findById, findByIdAndUpdate }

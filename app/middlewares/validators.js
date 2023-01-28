@@ -1,49 +1,49 @@
 const { body } = require('express-validator')
 
 const registroValidator = [
-  body('email').trim().not().isEmpty().withMessage('Email es obligatorio')
-    .isEmail().normalizeEmail().withMessage('Introduce un email valido'),
+  body('email').trim().not().isEmpty().withMessage('Email is required')
+    .isEmail().normalizeEmail().withMessage('Invalid email'),
 
-  body('name').trim().not().isEmpty().withMessage('Name es obligatorio'),
+  body('name').trim().not().isEmpty().withMessage('Name is required'),
 
-  body('username').trim().not().isEmpty().withMessage('Username es obligatorio'),
+  body('username').trim().not().isEmpty().withMessage('Username is required'),
 
-  body('password').trim().not().isEmpty().withMessage('Password es obligatorio')
-    .isLength({ min: 6 }).withMessage('Password debe tener al menos 6 caracteres')
+  body('password').trim().not().isEmpty().withMessage('Password is required')
+    .isLength({ min: 6 }).withMessage('Password must have at least 6 characters')
 ]
 
 const loginValidator = [
-  body('email').trim().not().isEmpty().withMessage('Email es obligatorio')
-    .isEmail().normalizeEmail().withMessage('Introduce un email valido'),
+  body('email').trim().not().isEmpty().withMessage('Email is required')
+    .isEmail().normalizeEmail().withMessage('Invalid email'),
 
-  body('password').trim().not().isEmpty().withMessage('Password es obligatorio')
-    .isLength({ min: 6 }).withMessage('Password debe tener al menos 6 caracteres')
+  body('password').trim().not().isEmpty().withMessage('Password is required')
+    .isLength({ min: 6 }).withMessage('Password must have at least 6 characters')
 ]
 
 const todoValidator = [
-  body('titulo').trim().not().isEmpty().withMessage('Titulo es obligatorio'),
-  body('descripcion').optional({ nullable: true }).isString().withMessage('Descripción incorrecto'),
-  body('completado').optional({ nullable: true }).isBoolean().withMessage('Completado incorrecto')
+  body('title').trim().not().isEmpty().withMessage('Title is required'),
+  body('description').optional({ nullable: true }).isString().withMessage('Invalid description'),
+  body('completed').optional({ nullable: true }).isBoolean().withMessage('Invalid completed field')
 ]
 
 const cursoValidator = [
-  body('titulo').trim().not().isEmpty().withMessage('Titulo es obligatorio'),
-  body('descripcion').optional({ nullable: true }).isString().withMessage('Descripción incorrecto'),
-  body('estado').trim().not().isEmpty().withMessage('Estado es obligatorio')
-    .isString().isIn(['PH', 'EP', 'FZ']).withMessage('Estado incorrecto')
+  body('title').trim().not().isEmpty().withMessage('Title is required'),
+  body('description').optional({ nullable: true }).isString().withMessage('Invalid description'),
+  body('state').trim().not().isEmpty().withMessage('State is required')
+    .isString().isIn(['PH', 'EP', 'FZ']).withMessage('Invalid state')
 ]
 
 const modificarUsuarioValidator = [
-  body('password').optional({ nullable: true }).isString().withMessage('Password incorrecto')
-    .isLength({ min: 6 }).withMessage('Password debe tener al menos 6 caracteres'),
+  body('password').optional({ nullable: true }).isString().withMessage('Invalid password')
+    .isLength({ min: 6 }).withMessage('Password must have at least 6 characters'),
 
-  body('name').optional({ nullable: true }).isString().withMessage('Name incorrecto'),
+  body('name').optional({ nullable: true }).isString().withMessage('Invalid name'),
 
-  body('username').optional({ nullable: true }).isString().withMessage('Username incorrecto')
+  body('username').optional({ nullable: true }).isString().withMessage('Invalid username')
 ]
 
 const guardarBusquedaValidator = [
-  body('busqueda').trim().not().isEmpty().isString().withMessage('Busqueda incorrecto')
+  body('text').trim().not().isEmpty().isString().withMessage('Invalid search')
 ]
 
 module.exports = { registroValidator, cursoValidator, loginValidator, todoValidator, modificarUsuarioValidator, guardarBusquedaValidator }

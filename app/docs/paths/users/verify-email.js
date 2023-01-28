@@ -1,11 +1,11 @@
 module.exports = {
   get: {
     tags: ['User CRUD operations'],
-    description: 'Verificar Usuario',
-    operationId: 'verificarUsuario',
+    description: 'Verify User',
+    operationId: 'verifyUser',
     responses: {
       200: {
-        description: 'Verificación del Usuario',
+        description: 'User verified',
         content: {
           'application/json': {
             schema: {
@@ -13,7 +13,7 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: true
                 },
                 data: {
@@ -21,24 +21,24 @@ module.exports = {
                   properties: {
                     id: {
                       type: 'string',
-                      description: 'Id del usuario que se ha registrado',
+                      description: 'User Id',
                       example: '6481ce39ee3c501fd24667ef'
                     },
                     username: {
                       type: 'string',
-                      description: 'Username del usuario que hace login',
+                      description: 'Username',
                       example: 'JavaScriptCoder'
                     },
-                    verificado: {
+                    verified: {
                       type: 'boolean',
-                      description: 'Indica si el usuario ha sido verificado',
+                      description: 'User verified',
                       example: true
                     }
                   }
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
+                  description: 'Error message',
                   example: null
                 }
               }
@@ -55,18 +55,18 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: false
                 },
                 data: {
                   type: 'string',
-                  description: 'Contiene la data a devolver',
+                  description: 'Data',
                   example: null
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
-                  example: 'Error obteniendo el usuario'
+                  description: 'Error message',
+                  example: 'Error getting user'
                 }
               }
             }

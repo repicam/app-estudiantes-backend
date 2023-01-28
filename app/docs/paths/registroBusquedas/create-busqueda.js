@@ -30,7 +30,7 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: true
                 },
                 data: {
@@ -45,7 +45,7 @@ module.exports = {
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
+                  description: 'Error message',
                   example: null
                 }
               }
@@ -54,7 +54,7 @@ module.exports = {
         }
       },
       401: {
-        description: 'No autorizado',
+        description: 'Non authorized',
         content: {
           'application/json': {
             schema: {
@@ -62,18 +62,18 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: false
                 },
                 data: {
                   type: 'string',
-                  description: 'Contiene la data a devolver',
+                  description: 'Data',
                   example: null
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
-                  example: 'Tu petición no tiene cabecera de autorización o es incorrecta'
+                  description: 'Error message',
+                  example: 'Your request does not have an authorization header or it is incorrect'
                 }
               }
             }
@@ -89,18 +89,18 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: false
                 },
                 data: {
                   type: 'string',
-                  description: 'Contiene la data a devolver',
+                  description: 'Data',
                   example: null
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
-                  example: 'Error obteniendo el usuario'
+                  description: 'Error message',
+                  example: 'Error getting user'
                 }
               }
             }

@@ -36,7 +36,7 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: true
                 },
                 data: {
@@ -44,17 +44,17 @@ module.exports = {
                   properties: {
                     id: {
                       type: 'string',
-                      description: 'Id del usuario que hace login',
+                      description: 'User Id',
                       example: '6481ce39ee3c501fd24667ef'
                     },
                     name: {
                       type: 'string',
-                      description: 'Nombre del usuario que hace login',
+                      description: 'Name',
                       example: 'Java Script'
                     },
                     username: {
                       type: 'string',
-                      description: 'Username del usuario que hace login',
+                      description: 'Username',
                       example: 'JavaScriptCoder'
                     },
                     token: {
@@ -71,7 +71,7 @@ module.exports = {
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
+                  description: 'Error message',
                   example: null
                 }
               }
@@ -88,17 +88,17 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: false
                 },
                 data: {
                   type: 'string',
-                  description: 'Contiene la data a devolver',
+                  description: 'Data',
                   example: null
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
+                  description: 'Error message',
                   example: 'Email o password incorrecto'
                 }
               }

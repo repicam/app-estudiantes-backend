@@ -20,7 +20,7 @@ const userSchema = new Schema({
     minlength: 6,
     required: true
   },
-  imagen: {
+  image: {
     public_id: {
       type: String,
       default: null
@@ -30,14 +30,14 @@ const userSchema = new Schema({
       default: 'https://res.cloudinary.com/app-estudiantes/image/upload/v1669534655/default_user_photo.png'
     }
   },
-  seguridad: {
-    verificado: Boolean,
+  security: {
+    verified: Boolean,
     cryptoToken: String,
-    restaurarPassword: Boolean
+    restorePassword: Boolean
   },
-  cursos: [{
+  courses: [{
     type: Schema.Types.ObjectId,
-    ref: 'Curso'
+    ref: 'Course'
   }],
   toDos: [{
     type: Schema.Types.ObjectId,
@@ -63,7 +63,7 @@ const find = async (data) => {
 }
 
 const findById = async (id) => {
-  return await User.findById(id).populate('cursos').populate('toDos').populate('searches')
+  return await User.findById(id).populate('courses').populate('toDos').populate('searches')
 }
 
 const create = async (newUserData) => {
@@ -74,7 +74,7 @@ const create = async (newUserData) => {
 }
 
 const saveCursoIntoUser = async (curso, user) => {
-  user.cursos = user.cursos.concat(curso._id)
+  user.courses = user.courses.concat(curso._id)
   await user.save()
 }
 

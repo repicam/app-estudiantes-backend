@@ -1,7 +1,7 @@
 const { model, Schema } = require('mongoose')
 
 const searchSchema = new Schema({
-  busqueda: {
+  text: {
     type: String,
     required: true
   },

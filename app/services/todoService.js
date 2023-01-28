@@ -3,6 +3,8 @@ const Todo = require('../models/Todo')
 const User = require('../models/User')
 const { createResponse } = require('../utils/responseGenerator')
 
+const USER_ERROR = 'Error getting user'
+
 const crearTodo = async (req) => {
   let data = null
 
@@ -16,7 +18,7 @@ const crearTodo = async (req) => {
   const userExists = await User.findById(userId)
 
   if (!userExists) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
   body.user = userExists._id
   const createdTodo = await Todo.create(body)
@@ -41,7 +43,7 @@ const actualizarTodo = async (req) => {
   const todoExists = await Todo.findOne({ _id: id, user: userId })
 
   if (!todoExists) {
-    return createResponse(false, null, 'Error to-do no encontrado', 401)
+    return createResponse(false, null, 'Error todo not found', 401)
   }
 
   const { titulo, descripcion, completado } = req.body
@@ -66,7 +68,7 @@ const obtenerTodos = async (req) => {
   const user = await User.findById(userId)
 
   if (!user) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
   if (!completado) {
@@ -94,7 +96,7 @@ const obtenerTodosById = async (req) => {
   const user = await User.findById(userId)
 
   if (!user) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
   const todo = await Todo.find({ _id: id, user: userId })
@@ -115,7 +117,7 @@ const eliminarTodo = async (req) => {
   const todoEliminado = await Todo.deleteOne({ _id: id, user: userId })
 
   if (!todoEliminado.deletedCount) {
-    return createResponse(false, data, 'Error to-do no encontrado', 400)
+    return createResponse(false, data, 'Error todo not found', 400)
   }
 
   data = {

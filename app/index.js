@@ -30,5 +30,5 @@ app.use(unknownEndpoint)
 app.use(errorHandler)
 
 app.listen(PORT, () => {
-  console.log(`Servidor inciado en el puerto ${PORT}`)
+  console.log(`Server started on port ${PORT}`)
 })

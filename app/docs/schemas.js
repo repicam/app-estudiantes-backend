@@ -6,78 +6,78 @@ module.exports = {
         properties: {
           _id: {
             type: 'string',
-            description: 'Identificador del Usuario',
+            description: 'User Id',
             example: '6481ce39ee3c501fd24667ef'
           },
           username: {
             type: 'string',
-            description: 'Username del Usuario',
+            description: 'Username',
             example: 'JavaScriptCoder'
           },
           name: {
             type: 'string',
-            description: 'Name del Usuario',
+            description: 'Name',
             example: 'Java Script'
           },
           email: {
             type: 'string',
-            description: 'Email del Usuario',
+            description: 'Email',
             example: 'javascript@gmail.com'
           },
           password: {
             type: 'boolean',
-            description: 'Hash de la contraseña del Usuario',
+            description: 'Password hashed',
             example: '$2y$10$salt56789012345678901uTWNlUnhu5K/xBrtKYTo7oDy8zMr/csu'
           },
-          imagen: {
+          image: {
             type: 'object',
             properties: {
               public_id: {
                 type: 'string',
-                description: 'Identificador de la imagen en cloudinary',
+                description: 'Cloudinary Id',
                 example: '6481ce39ee3c501fd24667ef'
               },
               secure_url: {
                 type: 'string',
-                description: 'URL de la imagen en cloudinary',
+                description: 'Cloudinary URL',
                 example: 'https://res.cloudinary.com/app-estudiantes/image/upload/v1669534655/default_user_photo.png'
               }
             }
           },
-          seguridad: {
+          security: {
             type: 'object',
             properties: {
-              verificado: {
+              verified: {
                 type: 'boolean',
-                description: 'Indica si el usuario está verificado',
+                description: 'User verified?',
                 example: true
               },
               cryptoToken: {
                 type: 'string',
-                description: 'Almacena el crypto token para verificar el usuario por la url y para el proceso de restaurar contraseña',
+                description: 'Crypto token to check the user',
                 example: '50881c2819427dc9070d1ab82d14a91b'
               },
-              restaurarPassword: {
+              restorePassword: {
                 type: 'boolean',
-                description: 'Indica si el usuario a comenzado un proceso de restaurar contraseña',
+                description: 'Restore password?',
                 example: false
               }
             }
           },
-          course: {
+          courses: {
             type: 'array',
             items: { $ref: '#/components/schemas/Course' },
-            description: 'Contiene todos los cursos del Usuario'
+            description: 'User courses'
           },
           toDos: {
             type: 'array',
             items: { $ref: '#/components/schemas/ToDo' },
-            description: 'Contiene todos los toDos del Usuario'
+            description: 'User toDos'
           },
           searches: {
             type: 'array',
-            items: { $ref: '#/components/schemas/SearchHistory' },
-            description: 'Contiene todos los registros de búsqueda del Usuario'
+            items: { $ref: '#/components/schemas/Search' },
+            description: 'User searches'
           }
         }
       },
@@ -86,27 +86,27 @@ module.exports = {
         properties: {
           _id: {
             type: 'string',
-            description: 'Identificador del ToDo',
+            description: 'ToDo Id',
             example: '6381cf39ee3c502fd24607ec'
           },
-          titulo: {
+          title: {
             type: 'string',
-            description: 'Titulo del ToDo',
+            description: 'Title',
             example: 'JavaScript'
           },
-          descripcion: {
+          description: {
             type: 'string',
-            description: 'Descripción del ToDo',
+            description: 'Description',
             example: 'Coding in JavaScript'
           },
-          completado: {
+          completed: {
             type: 'boolean',
-            description: 'Estado del ToDo',
+            description: 'Completed toDo?',
             example: false
           },
-          userId: {
+          user: {
             type: 'string',
-            description: 'Id del usuario que crea el ToDo',
+            description: 'User Id',
             example: '6481ce39ee3c501fd24667ef'
           }
         }
@@ -116,57 +116,57 @@ module.exports = {
         properties: {
           _id: {
             type: 'string',
-            description: 'Identificador del ToDo',
+            description: 'Course Id',
             example: '6381cf39ee3c502fd24607ec'
           },
-          titulo: {
+          title: {
             type: 'string',
-            description: 'Titulo del ToDo',
+            description: 'Title',
             example: 'JavaScript'
           },
-          descripcion: {
+          description: {
             type: 'string',
-            description: 'Descripción del ToDo',
+            description: 'Description',
             example: 'Coding in JavaScript'
           },
-          estado: {
+          state: {
             type: 'string',
-            description: 'Estado del Curso',
+            description: 'State',
             example: 'EP'
           },
-          fechaInicio: {
+          startDate: {
             type: 'date',
-            description: 'Fecha inicio del Curso',
+            description: 'Start date',
             example: '2022-12-01'
           },
-          fechaFin: {
+          finishDate: {
             type: 'date',
-            description: 'Fecha fin del Curso',
+            description: 'Finish date',
             example: '2022-12-20'
           },
-          userId: {
+          user: {
             type: 'string',
-            description: 'Id del usuario que crea el ToDo',
+            description: 'User Id',
             example: '6481ce39ee3c501fd24667ef'
           }
         }
       },
-      SearchHistory: {
+      Search: {
         type: 'object',
         properties: {
           _id: {
             type: 'string',
-            description: 'Identificador del ToDo',
+            description: 'Id',
             example: '6381cf39ee3c502fd24607ec'
           },
-          busqueda: {
+          text: {
             type: 'string',
-            description: 'Búsqueda del usuario que registraremos',
+            description: 'Text',
             example: 'JavaScript'
           },
-          userId: {
+          user: {
             type: 'string',
-            description: 'Id del usuario que registra la búsqueda',
+            description: 'User Id',
             example: '6481ce39ee3c501fd24667ef'
           }
         }
