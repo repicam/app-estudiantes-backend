@@ -11,7 +11,9 @@ Backend para la app de estudiantes
 
 Para trabajar creamos una rama feature para el desarrollo y luego se solicita PR sobre develop
 
-Necesitaremos un fichero .env con los campos PORT, BBDD_USER, BBDD_PASS, BBDD_CLUSTER, JWT_SECRET_KEY, CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET, EMAIL_ACCOUNT, EMAIL_PASSWORD
+Necesitaremos un fichero .env con los campos PORT, BBDD_URI*, JWT_SECRET_KEY, CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET, EMAIL_ACCOUNT, EMAIL_PASSWORD
+
+*URL completa de MongoDB Atlas (ej. mongodb+srv://user:pass@cluster.c3unr1n.mongodb.net/schema?retryWrites=true&w=majority)
 
 ## Endpoints
 
