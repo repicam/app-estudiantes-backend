@@ -1,6 +1,6 @@
 module.exports = {
   patch: {
-    tags: ['Curso CRUD operations'],
+    tags: ['Course CRUD operations'],
     description: 'Update Curso',
     operationId: 'updateCurso',
     requestBody: {
@@ -17,7 +17,7 @@ module.exports = {
                   example: true
                 },
                 data: {
-                  $ref: '#/components/schemas/Curso'
+                  $ref: '#/components/schemas/Course'
                 },
                 errorMsg: {
                   type: 'string',
@@ -44,7 +44,7 @@ module.exports = {
                   example: true
                 },
                 data: {
-                  $ref: '#/components/schemas/Curso'
+                  $ref: '#/components/schemas/Course'
                 },
                 errorMsg: {
                   type: 'string',

@@ -64,9 +64,9 @@ module.exports = {
               }
             }
           },
-          cursos: {
+          course: {
             type: 'array',
-            items: { $ref: '#/components/schemas/Curso' },
+            items: { $ref: '#/components/schemas/Course' },
             description: 'Contiene todos los cursos del Usuario'
           },
           toDos: {
@@ -111,7 +111,7 @@ module.exports = {
           }
         }
       },
-      Curso: {
+      Course: {
         type: 'object',
         properties: {
           _id: {

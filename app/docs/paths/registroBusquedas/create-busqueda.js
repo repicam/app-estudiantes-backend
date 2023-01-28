@@ -1,6 +1,6 @@
 module.exports = {
   post: {
-    tags: ['Registro busquedas CRUD operations'],
+    tags: ['Historical search CRUD operations'],
     description: 'Create Historico Busquedas',
     operationId: 'createHistoricoBusquedas',
     requestBody: {

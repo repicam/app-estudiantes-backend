@@ -1,8 +1,8 @@
 module.exports = {
   post: {
-    tags: ['Curso CRUD operations'],
-    description: 'Create Cursos',
-    operationId: 'createCursos',
+    tags: ['Course CRUD operations'],
+    description: 'Create Courses',
+    operationId: 'createCourses',
     requestBody: {
       description: 'Body',
       content: {
@@ -12,12 +12,12 @@ module.exports = {
             properties: {
               titulo: {
                 type: 'string',
-                description: 'Titulo del ToDo',
+                description: 'Titulo del Curso',
                 example: 'JavaScript'
               },
               descripcion: {
                 type: 'string',
-                description: 'Descripción del ToDo',
+                description: 'Descripción del Curso',
                 example: 'Coding in JavaScript'
               },
               estado: {
@@ -44,7 +44,7 @@ module.exports = {
                   example: true
                 },
                 data: {
-                  $ref: '#/components/schemas/Curso'
+                  $ref: '#/components/schemas/Course'
                 },
                 errorMsg: {
                   type: 'string',

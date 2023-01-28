@@ -21,32 +21,32 @@ const forgotPassword = require('./users/forgot-password')
 
 module.exports = {
   paths: {
-    '/curso': {
+    '/course': {
       ...getCursos,
       ...createCurso
     },
-    '/curso/{id}': {
+    '/course/{id}': {
       ...getCurso,
       ...updateCurso,
       ...deleteCurso
     },
-    '/toDo': {
+    '/to-do': {
       ...getToDos,
       ...createToDo
     },
-    '/toDo/{id}': {
+    '/to-do/{id}': {
       ...getToDo,
       ...updateToDo,
       ...deleteToDo
     },
-    '/historico/busqueda': {
+    '/historical/search': {
       ...getBusquedas,
       ...createbusqueda
     },
     '/login': {
       ...login
     },
-    '/registro': {
+    '/register': {
       ...registro
     },
     '/renew': {
@@ -58,10 +58,10 @@ module.exports = {
     '/user/uploadPhoto': {
       ...uploadPhoto
     },
-    '/user/verify/email/:userId/:cryptoToken': {
+    '/user/verify/:cryptoToken': {
       ...verifyEmail
     },
-    '/user/reset/password/:userId/:cryptoToken': {
+    '/user/reset': {
       ...resetPassword
     },
     '/user/forgot/password': {

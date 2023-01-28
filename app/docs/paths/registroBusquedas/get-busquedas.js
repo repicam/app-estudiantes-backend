@@ -1,6 +1,6 @@
 module.exports = {
   get: {
-    tags: ['Registro busquedas CRUD operations'],
+    tags: ['Historical search CRUD operations'],
     description: 'Get Historico Busquedas',
     operationId: 'getHistoricoBusquedas',
     responses: {

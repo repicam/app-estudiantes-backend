@@ -1,6 +1,6 @@
 module.exports = {
   delete: {
-    tags: ['Curso CRUD operations'],
+    tags: ['Course CRUD operations'],
     description: 'Delete Curso',
     operationId: 'deleteCurso',
     responses: {

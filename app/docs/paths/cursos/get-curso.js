@@ -1,6 +1,6 @@
 module.exports = {
   get: {
-    tags: ['Curso CRUD operations'],
+    tags: ['Course CRUD operations'],
     description: 'Get Curso',
     operationId: 'getCurso',
     responses: {
@@ -17,7 +17,7 @@ module.exports = {
                   example: true
                 },
                 data: {
-                  $ref: '#/components/schemas/Curso'
+                  $ref: '#/components/schemas/Course'
                 },
                 errorMsg: {
                   type: 'string',
