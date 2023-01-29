@@ -10,7 +10,7 @@ Backend for the student app
 4. To start the server we execute _npm run dev_: This executes the configured eslint rules (standard package) and starts the server
 
 To work we create a feature branch for development and then PR is requested on develop
-Necesitaremos un fichero .env con los campos PORT, BBDD_URI*, JWT_SECRET_KEY, CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET, EMAIL_ACCOUNT, EMAIL_PASSWORD
+We will need an .env file with the fields PORT, BBDD_URI*, JWT_SECRET_KEY, CLOUD_NAME, CLOUD_API_KEY, CLOUD_API_SECRET, EMAIL_ACCOUNT, EMAIL_PASSWORD
 
 *full url of MongoDB Atlas (ej. mongodb+srv://user:pass@cluster.c3unr1n.mongodb.net/schema?retryWrites=true&w=majority)
 
@@ -49,14 +49,14 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_URI*, JWT_SECRET_KEY, CL
 
           "description": "This course is trial", //(optional)
 
-          "status": "EP"
+          "state": "EP"
       }
 
 - GET (/api/course) with the token for the _Authorization_ header and returns an array with all the user's courses and the userId
 
-- GET (/api/course/:id) con el token por el header _Authorization_ y retorna el curso si es del usuario y el userId
+- GET (/api/course/:id) with the token for the _Authorization_ header and returns the course if it belongs to the user and the userId
 
-- DELETE (/api/course/:id) cwith the token for the _Authorization_ header and returns the course if it belongs to the user and the userId
+- DELETE (/api/course/:id) with the token for the _Authorization_ header and the userId if it has been deleted and error if it could not be deleted
 
 - PATCH (/api/course/:id) with the token for the _Authorization_ header and returns the course and the userId
         {
@@ -64,7 +64,7 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_URI*, JWT_SECRET_KEY, CL
 
            "description": "Ground floor" //(optional)
 
-            "status": "PH",
+            "state": "PH",
         }
 
 ### ToDos
