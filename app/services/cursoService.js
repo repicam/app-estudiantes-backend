@@ -36,11 +36,11 @@ const crearCurso = async (req) => {
 
 function setFechaByEstado (cursoData) {
   switch (cursoData.state) {
-    case 'PH':
+    case 'TD':
       cursoData.startDate = null
       cursoData.finishDate = null
       break
-    case 'EP':
+    case 'IP':
       cursoData.startDate = cursoData.startDate || new Date()
       cursoData.finishDate = null
       break

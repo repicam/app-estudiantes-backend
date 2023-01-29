@@ -46,10 +46,10 @@ const actualizarTodo = async (req) => {
     return createResponse(false, null, 'Error todo not found', 401)
   }
 
-  const { titulo, descripcion, completado } = req.body
-  todoExists.titulo = titulo || todoExists.titulo
-  todoExists.descripcion = descripcion || todoExists.descripcion
-  todoExists.completado = completado || todoExists.completado
+  const { title, description, completed } = req.body
+  todoExists.title = title || todoExists.title
+  todoExists.description = description || todoExists.description
+  todoExists.completed = completed || todoExists.completed
   const todoUpdate = await Todo.findByIdAndUpdate(id, todoExists)
   const data = {
     userId: todoUpdate.user,
@@ -63,7 +63,7 @@ const obtenerTodos = async (req) => {
   let data = null
 
   const { userId, query } = req
-  const { completado } = query
+  const { completed } = query
 
   const user = await User.findById(userId)
 
@@ -71,13 +71,13 @@ const obtenerTodos = async (req) => {
     return createResponse(false, data, USER_ERROR, 400)
   }
 
-  if (!completado) {
+  if (!completed) {
     data = {
       userId,
       todos: user.toDos
     }
   } else {
-    const todoCompleted = await Todo.find({ user: userId, completado })
+    const todoCompleted = await Todo.find({ user: userId, completed })
     data = {
       userId,
       todoCompleted
