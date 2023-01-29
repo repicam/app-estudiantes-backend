@@ -58,13 +58,12 @@ const subirFotoUsuario = async (req, res, next) => {
 
 const verificarEmail = async (req, res, next) => {
   try {
-    const { success, data, errorMsg, statusCode } = await userService.verificarEmail(req)
-    const response = {
-      success,
-      data,
-      errorMsg
+    const { success } = await userService.verificarEmail(req)
+    if (success === true) {
+      res.redirect(process.env.URL_SIGNIN)
+    } else {
+      res.redirect(process.env.URL_REGISTER)
     }
-    res.status(statusCode).json(response)
   } catch (error) {
     next(error)
   }
