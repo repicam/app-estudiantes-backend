@@ -58,7 +58,7 @@ module.exports = {
     '/user/uploadPhoto': {
       ...uploadPhoto
     },
-    '/user/verify/:cryptoToken': {
+    '/user/verify/{cryptoToken}': {
       ...verifyEmail
     },
     '/user/reset': {

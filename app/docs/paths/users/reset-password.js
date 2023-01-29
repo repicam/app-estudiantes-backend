@@ -1,5 +1,5 @@
 module.exports = {
-  put: {
+  post: {
     tags: ['User CRUD operations'],
     description: 'Update password',
     operationId: 'updatePassword',
