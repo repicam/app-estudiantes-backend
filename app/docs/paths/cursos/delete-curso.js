@@ -1,11 +1,11 @@
 module.exports = {
   delete: {
     tags: ['Course CRUD operations'],
-    description: 'Delete Curso',
-    operationId: 'deleteCurso',
+    description: 'Delete Course',
+    operationId: 'deleteCourse',
     responses: {
       200: {
-        description: 'Eliminar Curso correspondiente al id indicado',
+        description: 'Delete Course',
         content: {
           'application/json': {
             schema: {
@@ -21,7 +21,7 @@ module.exports = {
                   properties: {
                     userId: {
                       type: 'string',
-                      description: 'Id del usuario que realiza la acción',
+                      description: 'User Id',
                       example: '6481ce39ee3c501fd24667ef'
                     }
                   }

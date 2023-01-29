@@ -1,8 +1,8 @@
 module.exports = {
   post: {
     tags: ['Historical search CRUD operations'],
-    description: 'Create Historico Busquedas',
-    operationId: 'createHistoricoBusquedas',
+    description: 'Create Historical Searches',
+    operationId: 'createHistoricalSearches',
     requestBody: {
       description: 'Body',
       content: {
@@ -10,9 +10,9 @@ module.exports = {
           schema: {
             type: 'object',
             properties: {
-              busqueda: {
+              text: {
                 type: 'string',
-                description: 'Búsqueda del usuario que registraremos',
+                description: 'Text',
                 example: 'JavaScript'
               }
             }
@@ -22,7 +22,7 @@ module.exports = {
     },
     responses: {
       201: {
-        description: 'Crear nuevo ToDo',
+        description: 'Crear new historical search',
         content: {
           'application/json': {
             schema: {
@@ -36,9 +36,9 @@ module.exports = {
                 data: {
                   type: 'object',
                   properties: {
-                    busqueda: {
+                    search: {
                       type: 'string',
-                      description: 'Búsqueda registrada',
+                      description: 'Search text',
                       example: 'JavaScript'
                     }
                   }

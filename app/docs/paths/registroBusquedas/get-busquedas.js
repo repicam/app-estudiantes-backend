@@ -1,11 +1,11 @@
 module.exports = {
   get: {
     tags: ['Historical search CRUD operations'],
-    description: 'Get Historico Busquedas',
-    operationId: 'getHistoricoBusquedas',
+    description: 'Get Historical Searches',
+    operationId: 'getHistoricalSearches',
     responses: {
       200: {
-        description: 'Listado de Historico Busquedas',
+        description: 'Historical Searches List',
         content: {
           'application/json': {
             schema: {
@@ -21,17 +21,17 @@ module.exports = {
                   properties: {
                     userId: {
                       type: 'string',
-                      description: 'Id del usuario que realiza la acción',
+                      description: 'User Id',
                       example: '6481ce39ee3c501fd24667ef'
                     },
-                    historial: {
+                    historical: {
                       type: 'array',
                       items: {
                         type: 'string',
-                        description: 'Búsqueda registrada',
+                        description: 'Search text',
                         example: 'JavaScript'
                       },
-                      description: 'Contiene todos los registros de búsqueda del Usuario'
+                      description: 'Contains all User historical searches'
                     }
                   }
                 },

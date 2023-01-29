@@ -5,7 +5,7 @@ module.exports = {
     operationId: 'getToDos',
     responses: {
       200: {
-        description: 'Listado de ToDos',
+        description: 'ToDo list',
         content: {
           'application/json': {
             schema: {

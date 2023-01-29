@@ -1,11 +1,11 @@
 module.exports = {
   get: {
     tags: ['Course CRUD operations'],
-    description: 'Get Curso',
-    operationId: 'getCurso',
+    description: 'Get Course',
+    operationId: 'getCourse',
     responses: {
       200: {
-        description: 'Curso correspondiente al id indicado',
+        description: 'Course by id',
         content: {
           'application/json': {
             schema: {

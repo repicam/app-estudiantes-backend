@@ -5,7 +5,7 @@ module.exports = {
     operationId: 'deleteToDo',
     responses: {
       200: {
-        description: 'Eliminar ToDo correspondiente al id indicado',
+        description: 'Delete ToDo',
         content: {
           'application/json': {
             schema: {
@@ -21,7 +21,7 @@ module.exports = {
                   properties: {
                     userId: {
                       type: 'string',
-                      description: 'Id del usuario que realiza la acción',
+                      description: 'User Id',
                       example: '6481ce39ee3c501fd24667ef'
                     }
                   }

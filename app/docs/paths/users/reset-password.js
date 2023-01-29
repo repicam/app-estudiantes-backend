@@ -1,7 +1,7 @@
 module.exports = {
   put: {
     tags: ['User CRUD operations'],
-    description: 'Cambio password',
+    description: 'Update password',
     operationId: 'updatePassword',
     requestBody: {
       description: 'Body',
@@ -12,8 +12,8 @@ module.exports = {
             properties: {
               password: {
                 type: 'string',
-                description: 'Nueva password',
-                example: 'Nuev@Passw0rd'
+                description: 'New password',
+                example: 'New@Passw0rd'
               }
             }
           }
@@ -22,7 +22,7 @@ module.exports = {
     },
     responses: {
       200: {
-        description: 'Cambio de password del usuario',
+        description: 'Change password',
         content: {
           'application/json': {
             schema: {
@@ -38,8 +38,8 @@ module.exports = {
                   properties: {
                     msg: {
                       type: 'string',
-                      description: 'Información al usuario',
-                      example: 'La password ha sido actualizada'
+                      description: 'Info',
+                      example: 'The password has been updated'
                     }
                   }
                 },

@@ -10,19 +10,19 @@ module.exports = {
           schema: {
             type: 'object',
             properties: {
-              titulo: {
+              title: {
                 type: 'string',
-                description: 'Titulo del Curso',
+                description: 'Title',
                 example: 'JavaScript'
               },
-              descripcion: {
+              description: {
                 type: 'string',
-                description: 'Descripción del Curso',
+                description: 'Description',
                 example: 'Coding in JavaScript'
               },
-              estado: {
+              state: {
                 type: 'string',
-                description: 'Estado del Curso',
+                description: 'State',
                 example: 'EP'
               }
             }
@@ -32,7 +32,7 @@ module.exports = {
     },
     responses: {
       201: {
-        description: 'Crear nuevo Curso',
+        description: 'Create new course',
         content: {
           'application/json': {
             schema: {

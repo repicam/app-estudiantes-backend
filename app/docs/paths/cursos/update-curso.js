@@ -1,14 +1,14 @@
 module.exports = {
   patch: {
     tags: ['Course CRUD operations'],
-    description: 'Update Curso',
-    operationId: 'updateCurso',
+    description: 'Update Course',
+    operationId: 'updateCourse',
     requestBody: {
       description: 'Body',
       content: {
         'application/json': {
           schema: {
-            ResponseOkCursos: {
+            ResponseOkCourses: {
               type: 'object',
               properties: {
                 success: {
@@ -32,7 +32,7 @@ module.exports = {
     },
     responses: {
       200: {
-        description: 'Modificar Curso correspondiente al id indicado',
+        description: 'Update Course',
         content: {
           'application/json': {
             schema: {

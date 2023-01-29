@@ -1,11 +1,11 @@
 module.exports = {
   post: {
     tags: ['User CRUD operations'],
-    description: 'Renueva el token que se pasa por el header si es válido',
+    description: 'Renews the token passed by the header if it is valid',
     operationId: 'renewToken',
     responses: {
       200: {
-        description: 'Información al renovar el token',
+        description: 'Information when renew the token',
         content: {
           'application/json': {
             schema: {
@@ -36,12 +36,12 @@ module.exports = {
                     },
                     token: {
                       type: 'string',
-                      description: 'Token de sesion del usuario que hace login',
+                      description: 'Token',
                       example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGEyZWEzZjc2YTU0YWM5NTgzZjAyYyIsIm5hbWUiOiJJdmFuIiwiaWF0IjoxNjcwMTgyMTU5LCJleHAiOjE2NzAyMjUzNTl9.sW06uh1lMHtGrJ4ewk69WdhTQhXqzMfMA9B1kOuztyQ'
                     },
-                    imagen: {
+                    image: {
                       type: 'string',
-                      description: 'Imagen de perfil del usuario que hace login',
+                      description: 'Image',
                       example: 'https://res.cloudinary.com/app-estudiantes/image/upload/v1669534655/default_user_photo.png'
                     }
                   }

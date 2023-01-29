@@ -10,19 +10,19 @@ module.exports = {
           schema: {
             type: 'object',
             properties: {
-              titulo: {
+              title: {
                 type: 'string',
-                description: 'Titulo del ToDo',
+                description: 'Title',
                 example: 'JavaScript'
               },
-              descripcion: {
+              description: {
                 type: 'string',
-                description: 'Descripción del ToDo',
+                description: 'Description',
                 example: 'Coding in JavaScript'
               },
-              completado: {
+              completed: {
                 type: 'boolean',
-                description: 'Estado del ToDo',
+                description: 'Completed',
                 example: false
               }
             }
@@ -32,7 +32,7 @@ module.exports = {
     },
     responses: {
       200: {
-        description: 'Modificar ToDo correspondiente al id indicado',
+        description: 'Update ToDo',
         content: {
           'application/json': {
             schema: {
