@@ -49,7 +49,7 @@ We will need an .env file with the fields PORT, BBDD_URI*, JWT_SECRET_KEY, CLOUD
 
           "description": "This course is trial", //(optional)
 
-          "state": "EP"
+          "state": "IP"
       }
 
 - GET (/api/course) with the token for the _Authorization_ header and returns an array with all the user's courses and the userId
@@ -64,8 +64,10 @@ We will need an .env file with the fields PORT, BBDD_URI*, JWT_SECRET_KEY, CLOUD
 
            "description": "Ground floor" //(optional)
 
-            "state": "PH",
+            "state": "TD",
         }
+
+El campo state admite los siguientes valores: TD (Por hacer), IP (En progreso) y FZ (Finalizado)
 
 ### ToDos
 
@@ -196,7 +198,7 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_URI*, JWT_SECRET_KEY, CL
 
           "description": "Este curso es de prueba", //(opcional)
 
-          "state": "EP"
+          "state": "IP"
       }
 
 - GET (/api/course) con el token por el header _Authorization_ y retorna un arreglo con todos los cursos del usuario y el userId
@@ -212,8 +214,10 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_URI*, JWT_SECRET_KEY, CL
 
             "description": "Planta baja" //(opcional)
 
-            "state": "PH",
+            "state": "TD",
         }
+
+The status field admits the following values: TD (To do), IP (In progress) and FZ (Finalized)
 
 ### ToDos
 

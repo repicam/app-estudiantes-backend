@@ -23,7 +23,7 @@ module.exports = {
               state: {
                 type: 'string',
                 description: 'State',
-                example: 'EP'
+                example: 'IP'
               }
             }
           }
