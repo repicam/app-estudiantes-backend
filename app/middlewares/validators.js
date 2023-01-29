@@ -30,7 +30,7 @@ const cursoValidator = [
   body('title').trim().not().isEmpty().withMessage('Title is required'),
   body('description').optional({ nullable: true }).isString().withMessage('Invalid description'),
   body('state').trim().not().isEmpty().withMessage('State is required')
-    .isString().isIn(['PH', 'EP', 'FZ']).withMessage('Invalid state')
+    .isString().isIn(['TD', 'IP', 'FZ']).withMessage('Invalid state')
 ]
 
 const modificarUsuarioValidator = [
