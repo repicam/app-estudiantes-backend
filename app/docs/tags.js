@@ -7,10 +7,10 @@ module.exports = {
       name: 'User CRUD operations'
     },
     {
-      name: 'Curso CRUD operations'
+      name: 'Course CRUD operations'
     },
     {
-      name: 'Registro busquedas CRUD operations'
+      name: 'Historical search CRUD operations'
     }
   ]
 }

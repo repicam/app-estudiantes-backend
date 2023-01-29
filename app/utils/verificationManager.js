@@ -2,17 +2,17 @@ const crypto = require('crypto')
 
 const initUserSeguridad = () => {
   const cryptoToken = crypto.randomBytes(16).toString('hex')
-  const verificado = false
-  const restaurarPassword = false
+  const verified = false
+  const restorePassword = false
 
-  return { verificado, cryptoToken, restaurarPassword }
+  return { verified, cryptoToken, restorePassword }
 }
 
 const verificarUser = (user) => {
   return {
-    verificado: true,
+    verified: true,
     cryptoToken: null,
-    restaurarPassword: user.seguridad?.restaurarPassword
+    restorePassword: user.security?.restorePassword
   }
 }
 
@@ -20,17 +20,17 @@ const buildForgotPassword = (user) => {
   const cryptoToken = crypto.randomBytes(16).toString('hex')
 
   return {
-    verificado: user.seguridad?.verificado,
+    verified: user.security?.verified,
     cryptoToken,
-    restaurarPassword: true
+    restorePassword: true
   }
 }
 
 const passwordReset = (user) => {
   return {
-    verificado: user.seguridad?.verificado,
+    verified: user.security?.verified,
     cryptoToken: null,
-    restaurarPassword: false
+    restorePassword: false
   }
 }
 

@@ -1,8 +1,8 @@
 module.exports = {
   post: {
     tags: ['User CRUD operations'],
-    description: 'Solicitud cambio contraseña',
-    operationId: 'cambioPassword',
+    description: 'Change Password',
+    operationId: 'changePassword',
     requestBody: {
       description: 'Body',
       content: {
@@ -12,7 +12,7 @@ module.exports = {
             properties: {
               email: {
                 type: 'string',
-                description: 'Email del Usuario',
+                description: 'Email',
                 example: 'javascript@gmail.com'
               }
             }
@@ -22,7 +22,7 @@ module.exports = {
     },
     responses: {
       200: {
-        description: 'Solicitar cambio contraseña del email indicado',
+        description: 'Request to change the password of the indicated email',
         content: {
           'application/json': {
             schema: {
@@ -30,7 +30,7 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: true
                 },
                 data: {
@@ -38,24 +38,24 @@ module.exports = {
                   properties: {
                     id: {
                       type: 'string',
-                      description: 'Id del usuario que solicita el cambio de contraseña',
+                      description: 'User Id',
                       example: '6481ce39ee3c501fd24667ef'
                     },
                     msg: {
                       type: 'string',
-                      description: 'Información al usuario',
-                      example: 'Ha solicitado cambiar la contraseña'
+                      description: 'Info',
+                      example: 'You have requested to change your password'
                     },
                     cryptoToken: {
                       type: 'string',
-                      description: 'Informa el crypto token para controlar mas exacto el usuario por la url',
+                      description: 'User crypto token',
                       example: '50881c2819427dc9070d1ab82d14a91b'
                     }
                   }
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
+                  description: 'Error message',
                   example: null
                 }
               }
@@ -72,18 +72,18 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: false
                 },
                 data: {
                   type: 'string',
-                  description: 'Contiene la data a devolver',
+                  description: 'Data',
                   example: null
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
-                  example: 'Error obteniendo el usuario'
+                  description: 'Error message',
+                  example: 'Error getting user'
                 }
               }
             }

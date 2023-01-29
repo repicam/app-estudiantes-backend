@@ -1,7 +1,9 @@
 const { validationResult } = require('express-validator')
 const User = require('../models/User')
-const Curso = require('../models/Curso')
+const Course = require('../models/Curso')
 const { createResponse } = require('../utils/responseGenerator')
+
+const USER_ERROR = 'Error getting user'
 
 const crearCurso = async (req) => {
   let data = null
@@ -16,35 +18,35 @@ const crearCurso = async (req) => {
   const userExists = await User.findById(userId)
 
   if (!userExists) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
   body.user = userExists._id
   const cursoData = setFechaByEstado(body)
-  const createdCurso = await Curso.create(cursoData)
+  const createdCurso = await Course.create(cursoData)
 
   await User.saveCursoIntoUser(createdCurso, userExists)
 
   data = {
-    curso: createdCurso
+    course: createdCurso
   }
 
   return createResponse(true, data, null, 201)
 }
 
 function setFechaByEstado (cursoData) {
-  switch (cursoData.estado) {
+  switch (cursoData.state) {
     case 'PH':
-      cursoData.fechaInicio = null
-      cursoData.fechaFin = null
+      cursoData.startDate = null
+      cursoData.finishDate = null
       break
     case 'EP':
-      cursoData.fechaInicio = cursoData.fechaInicio || new Date()
-      cursoData.fechaFin = null
+      cursoData.startDate = cursoData.startDate || new Date()
+      cursoData.finishDate = null
       break
     case 'FZ':
-      cursoData.fechaInicio = cursoData.fechaInicio || new Date()
-      cursoData.fechaFin = new Date()
+      cursoData.startDate = cursoData.startDate || new Date()
+      cursoData.finishDate = new Date()
       break
   }
 
@@ -56,19 +58,19 @@ const actualizarCurso = async (req) => {
     return createResponse(false, null, errors.array(), 400)
   }
   const id = req.params.id
-  let cursoExists = await Curso.findById(id)
+  let cursoExists = await Course.findById(id)
   if (!cursoExists) {
-    return createResponse(false, null, 'Error actualizando el curso', 400)
+    return createResponse(false, null, 'Error updating the course', 400)
   }
-  const { titulo, descripcion, estado } = req.body
-  cursoExists.titulo = titulo || cursoExists.titulo
-  cursoExists.descripcion = descripcion || cursoExists.descripcion
-  cursoExists.estado = estado || cursoExists.estado
+  const { title, description, state } = req.body
+  cursoExists.title = title || cursoExists.title
+  cursoExists.description = description || cursoExists.description
+  cursoExists.state = state || cursoExists.state
   cursoExists = setFechaByEstado(cursoExists)
-  const cursoUpdate = await Curso.findByIdAndUpdate(id, cursoExists)
+  const cursoUpdate = await Course.findByIdAndUpdate(id, cursoExists)
   const data = {
     userId: cursoUpdate.user,
-    curso: cursoUpdate
+    course: cursoUpdate
   }
   return createResponse(true, data, null, 201)
 }
@@ -81,12 +83,12 @@ const getCursos = async (req) => {
   const user = await User.findById(userId)
 
   if (!user) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
   data = {
     userId,
-    cursos: user.cursos
+    courses: user.courses
   }
 
   return createResponse(true, data, null, 200)
@@ -101,14 +103,14 @@ const getCursoById = async (req) => {
   const user = await User.findById(userId)
 
   if (!user) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
-  const curso = await Curso.find({ _id: id, user: userId })
+  const course = await Course.find({ _id: id, user: userId })
 
   data = {
     userId,
-    curso
+    course
   }
 
   return createResponse(true, data, null, 200)
@@ -123,13 +125,13 @@ const eliminarCurso = async (req) => {
   const user = await User.findById(userId)
 
   if (!user) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
-  const cursoEliminado = await Curso.deleteOne({ _id: id, user: userId })
+  const cursoEliminado = await Course.deleteOne({ _id: id, user: userId })
 
   if (!cursoEliminado.deletedCount) {
-    return createResponse(false, data, 'Error eliminando el curso', 400)
+    return createResponse(false, data, 'Error deleting course', 400)
   }
 
   data = {

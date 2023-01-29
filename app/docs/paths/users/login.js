@@ -1,8 +1,8 @@
 module.exports = {
   post: {
     tags: ['User CRUD operations'],
-    description: 'Login Usuario',
-    operationId: 'loginUsuario',
+    description: 'User Login',
+    operationId: 'userLogin',
     requestBody: {
       description: 'Body',
       content: {
@@ -12,12 +12,12 @@ module.exports = {
             properties: {
               email: {
                 type: 'string',
-                description: 'Email del Usuario',
+                description: 'Email',
                 example: 'javascript@gmail.com'
               },
               password: {
                 type: 'boolean',
-                description: 'Contraseña del Usuario',
+                description: 'Password',
                 example: 'MiPassw0rd'
               }
             }
@@ -28,7 +28,7 @@ module.exports = {
     parameters: [],
     responses: {
       200: {
-        description: 'Login para usuarios',
+        description: 'Login',
         content: {
           'application/json': {
             schema: {
@@ -36,7 +36,7 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: true
                 },
                 data: {
@@ -44,34 +44,34 @@ module.exports = {
                   properties: {
                     id: {
                       type: 'string',
-                      description: 'Id del usuario que hace login',
+                      description: 'User Id',
                       example: '6481ce39ee3c501fd24667ef'
                     },
                     name: {
                       type: 'string',
-                      description: 'Nombre del usuario que hace login',
+                      description: 'Name',
                       example: 'Java Script'
                     },
                     username: {
                       type: 'string',
-                      description: 'Username del usuario que hace login',
+                      description: 'Username',
                       example: 'JavaScriptCoder'
                     },
                     token: {
                       type: 'string',
-                      description: 'Token de sesion del usuario que hace login',
+                      description: 'Token',
                       example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzOGEyZWEzZjc2YTU0YWM5NTgzZjAyYyIsIm5hbWUiOiJJdmFuIiwiaWF0IjoxNjcwMTgyMTU5LCJleHAiOjE2NzAyMjUzNTl9.sW06uh1lMHtGrJ4ewk69WdhTQhXqzMfMA9B1kOuztyQ'
                     },
-                    imagen: {
+                    image: {
                       type: 'string',
-                      description: 'Imagen de perfil del usuario que hace login',
+                      description: 'Image',
                       example: 'https://res.cloudinary.com/app-estudiantes/image/upload/v1669534655/default_user_photo.png'
                     }
                   }
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
+                  description: 'Error message',
                   example: null
                 }
               }
@@ -88,18 +88,18 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: false
                 },
                 data: {
                   type: 'string',
-                  description: 'Contiene la data a devolver',
+                  description: 'Data',
                   example: null
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
-                  example: 'Email o password incorrecto'
+                  description: 'Error message',
+                  example: 'Invalid Email/Username'
                 }
               }
             }

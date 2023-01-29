@@ -3,6 +3,8 @@ const Search = require('../models/SearchHistory')
 const User = require('../models/User')
 const { createResponse } = require('../utils/responseGenerator')
 
+const USER_ERROR = 'Error getting user'
+
 const guardarBusqueda = async (req) => {
   let data = null
 
@@ -16,7 +18,7 @@ const guardarBusqueda = async (req) => {
   const userExists = await User.findById(userId)
 
   if (!userExists) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
   body.user = userExists._id
   const createdSearch = await Search.create(body)
@@ -24,7 +26,7 @@ const guardarBusqueda = async (req) => {
   await User.saveSearchIntoUser(createdSearch, userExists)
 
   data = {
-    busqueda: createdSearch
+    search: createdSearch
   }
 
   return createResponse(true, data, null, 201)
@@ -39,16 +41,16 @@ const obtenerUltimasBusquedas = async (req) => {
   const user = await User.findById(userId)
 
   if (!user) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
-  const historial = user.searches?.sort((a, b) => {
+  const historical = user.searches?.sort((a, b) => {
     return b.createdAt - a.createdAt
   }).slice(0, limit)
 
   data = {
     userId,
-    historial
+    historical
   }
 
   return createResponse(true, data, null, 200)

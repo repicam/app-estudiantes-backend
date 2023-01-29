@@ -1,7 +1,7 @@
 module.exports = {
-  put: {
+  post: {
     tags: ['User CRUD operations'],
-    description: 'Cambio password',
+    description: 'Update password',
     operationId: 'updatePassword',
     requestBody: {
       description: 'Body',
@@ -12,8 +12,8 @@ module.exports = {
             properties: {
               password: {
                 type: 'string',
-                description: 'Nueva password',
-                example: 'Nuev@Passw0rd'
+                description: 'New password',
+                example: 'New@Passw0rd'
               }
             }
           }
@@ -22,7 +22,7 @@ module.exports = {
     },
     responses: {
       200: {
-        description: 'Cambio de password del usuario',
+        description: 'Change password',
         content: {
           'application/json': {
             schema: {
@@ -30,7 +30,7 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: true
                 },
                 data: {
@@ -38,14 +38,14 @@ module.exports = {
                   properties: {
                     msg: {
                       type: 'string',
-                      description: 'Información al usuario',
-                      example: 'La password ha sido actualizada'
+                      description: 'Info',
+                      example: 'The password has been updated'
                     }
                   }
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
+                  description: 'Error message',
                   example: null
                 }
               }
@@ -62,18 +62,18 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: false
                 },
                 data: {
                   type: 'string',
-                  description: 'Contiene la data a devolver',
+                  description: 'Data',
                   example: null
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
-                  example: 'Error obteniendo el usuario'
+                  description: 'Error message',
+                  example: 'Error getting user'
                 }
               }
             }

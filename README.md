@@ -46,11 +46,11 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_URI*, JWT_SECRET_KEY, CL
 - POST (/api/course) con el token por el header _Authorization_ y un body del siguiente estilo
 
       {
-          "titulo": "Pruebaaa",
+          "title": "Pruebaaa",
 
-          "descripcion": "Este curso es de prueba", //(opcional)
+          "description": "Este curso es de prueba", //(opcional)
 
-          "estado": "EP"
+          "state": "EP"
       }
 
 - GET (/api/course) con el token por el header _Authorization_ y retorna un arreglo con todos los cursos del usuario y el userId
@@ -62,11 +62,11 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_URI*, JWT_SECRET_KEY, CL
 - PATCH (/api/course/:id) con el token por el header _Authorization_ y retorna el curso y el userId
 
         {
-            "titulo": "Sexto",
+            "title": "Sexto",
 
-            "descripcion": "Planta baja" //(opcional)
+            "description": "Planta baja" //(opcional)
 
-            "estado": "PH",
+            "state": "PH",
         }
 
 ### ToDos
@@ -74,18 +74,18 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_URI*, JWT_SECRET_KEY, CL
 - POST (/api/to-do) con el token por el header _Authorization_ y un body del siguiente estilo
 
       {
-          "titulo": "Prueba",
+          "title": "Prueba",
 
-          "descripcion": "Este toDo es de prueba", //(opcional)
+          "description": "Este toDo es de prueba", //(opcional)
 
-          "completado": true //(opcional)
+          "completed": true //(opcional)
       }
 
 - GET (/api/to-do) con el token por el header _Authorization_  retorna un arreglo con el userId y todos los toDos del usuario 
 
-- GET (/api/to-do?completado=true) con el token por el header _Authorization_  retorna un arreglo con el userId y todos los toDos completados del usuario 
+- GET (/api/to-do?completed=true) con el token por el header _Authorization_  retorna un arreglo con el userId y todos los toDos completados del usuario 
 
-- GET (/api/to-do?completado=false) con el token por el header _Authorization_  retorna un arreglo con  el userId y todos los toDos no completados del usuario
+- GET (/api/to-do?completed=false) con el token por el header _Authorization_  retorna un arreglo con  el userId y todos los toDos no completados del usuario
 
 - GET (/api/to-do/:id) con el token por el header _Authorization_ y el Id del toDo en la url  retorna un arreglo con el toDos buscado en caso que no exista retorna null
 
@@ -94,16 +94,16 @@ Necesitaremos un fichero .env con los campos PORT, BBDD_URI*, JWT_SECRET_KEY, CL
 - PATCH (/api/to-do/:id) con el token por el header _Authorization_ el Id del toDo en la url  y las modificaciones en un  body del siguiente estilo
 
     {
-    "titulo":"Esto es una actualizacion",   
-    "descripcion":"Estoy editando el toDo",
-    "completado": true
+    "title":"Esto es una actualizacion",   
+    "description":"Estoy editando el toDo",
+    "completed": true
     }
 
 retorna un arreglo con el toDo actualizado
 
 ### Modificar usuario
 
-- PATCH (/api/user/uploadPhoto) con una imagen en la peticion tipo files
+- PATCH (/api/user/uploadPhoto) con una imagen en la peticion tipo files con el nombre image
 
 - GET (/user/verify/:cryptoToken) donde verificaremos al usuario (se envia por email)
 
@@ -134,7 +134,7 @@ retorna un arreglo con el toDo actualizado
 - POST (/api/historical/search) con el token por el header _Authorization_ y un body del siguiente estilo
 
       {
-          "busqueda": "Pruebaaa"
+          "text": "Pruebaaa"
       }
 
 - GET (/api/historical/search) con el token por el header _Authorization_ y retorna un arreglo con todas busquedas del usuario, ordenadas por mas recientes, y el userId

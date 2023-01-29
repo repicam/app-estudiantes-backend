@@ -5,15 +5,15 @@ const todoSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  titulo: {
+  title: {
     type: String,
     required: true
   },
-  descripcion: {
+  description: {
     type: String,
     default: null
   },
-  completado: {
+  completed: {
     type: Boolean,
     default: false
   }

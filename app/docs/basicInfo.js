@@ -1,8 +1,8 @@
 module.exports = {
   openapi: '3.0.3',
   info: {
-    title: 'API estudiantes',
-    description: 'API para aplicación de estudiantes',
+    title: 'Students API',
+    description: 'API for students application',
     version: '1.0.0',
     contact: {
       name: 'Ivan Repiso',

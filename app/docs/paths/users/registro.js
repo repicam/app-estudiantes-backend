@@ -1,8 +1,8 @@
 module.exports = {
   post: {
     tags: ['User CRUD operations'],
-    description: 'Registrar Usuario',
-    operationId: 'registrarUsuario',
+    description: 'User Register',
+    operationId: 'userRegister',
     requestBody: {
       description: 'Body',
       content: {
@@ -12,22 +12,22 @@ module.exports = {
             properties: {
               username: {
                 type: 'string',
-                description: 'Username del Usuario',
+                description: 'Username',
                 example: 'JavaScriptCoder'
               },
               name: {
                 type: 'string',
-                description: 'Name del Usuario',
+                description: 'Name',
                 example: 'Java Script'
               },
               password: {
                 type: 'string',
-                description: 'Contraseña del Usuario',
+                description: 'Password',
                 example: 'MiPassw0rd'
               },
               email: {
                 type: 'string',
-                description: 'Email del Usuario',
+                description: 'Email',
                 example: 'javascript@gmail.com'
               }
             }
@@ -37,7 +37,7 @@ module.exports = {
     },
     responses: {
       201: {
-        description: 'Registro para usuarios',
+        description: 'Register',
         content: {
           'application/json': {
             schema: {
@@ -45,7 +45,7 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: true
                 },
                 data: {
@@ -53,19 +53,19 @@ module.exports = {
                   properties: {
                     id: {
                       type: 'string',
-                      description: 'Id del usuario que se ha registrado',
+                      description: 'User Id',
                       example: '6481ce39ee3c501fd24667ef'
                     },
                     message: {
                       type: 'string',
-                      description: 'Mensaje informativo al usuario',
-                      example: 'Registrado correctamente. Debe verificar la cuenta. Revise su correo'
+                      description: 'Info',
+                      example: 'Registered successfully. You must verify the account. Check your mail'
                     }
                   }
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
+                  description: 'Error message',
                   example: null
                 }
               }
@@ -82,18 +82,18 @@ module.exports = {
               properties: {
                 success: {
                   type: 'boolean',
-                  description: 'Indicador peticion correcta',
+                  description: 'Correct?',
                   example: false
                 },
                 data: {
                   type: 'string',
-                  description: 'Contiene la data a devolver',
+                  description: 'Data',
                   example: null
                 },
                 errorMsg: {
                   type: 'string',
-                  description: 'Contiene el mensaje de error',
-                  example: 'Email y/o username ya existe. Pruebe a iniciar sesión'
+                  description: 'Error message',
+                  example: 'Invalid Email/Username'
                 }
               }
             }

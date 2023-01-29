@@ -8,9 +8,11 @@ const { initUserSeguridad, verificarUser, buildForgotPassword, passwordReset } =
 const { sendVerificationMail, sendForgotPasswordMail, sendChangedPasswordMail } = require('../utils/emailTransporter')
 const buildHostName = require('../utils/hostManager')
 
+const USER_ERROR = 'Error getting user'
+
 const SALT_ROUNDS = 10
 
-const MSG_NO_VERIFICADO = 'Debe verificar la cuenta. Revise su correo'
+const MSG_NO_VERIFICADO = 'You must verify the account. Check your mail'
 
 const registroUsuario = async (req) => {
   let data = null
@@ -26,20 +28,20 @@ const registroUsuario = async (req) => {
   const emailExists = await User.find({ email })
 
   if (usernameExists || emailExists) {
-    return createResponse(false, data, 'Email y/o username ya existe. Pruebe a iniciar sesión', 400)
+    return createResponse(false, data, 'Invalid Email/Username', 400)
   }
   const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
 
   const userData = req.body
   userData.password = passwordHash
-  userData.seguridad = initUserSeguridad()
+  userData.security = initUserSeguridad()
 
   const createdUser = await User.create(userData)
 
   await sendVerificationMail(createdUser, buildHostName(req))
 
   data = {
-    message: 'Registrado correctamente. ' + MSG_NO_VERIFICADO,
+    msg: 'Registered successfully. ' + MSG_NO_VERIFICADO,
     id: createdUser._id
   }
 
@@ -53,7 +55,7 @@ const renovarToken = async (req) => {
   const userExists = await User.findById(userId)
 
   if (!userExists) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
   const userToken = {
@@ -68,7 +70,7 @@ const renovarToken = async (req) => {
     id: userId,
     name: userName,
     username: userExists.username,
-    imagen: userExists.imagen.secure_url
+    image: userExists.image.secure_url
   }
 
   return createResponse(true, data, null, 200)
@@ -82,15 +84,15 @@ const loginUsuario = async (req) => {
   const { email, password } = req.body
   const userDB = await User.find({ email })
   if (userDB) {
-    if (userDB.seguridad?.restaurarPassword) {
-      return createResponse(false, null, 'Se ha solicitado un cambio de password y debe terminar el proceso', 400)
+    if (userDB.security?.restorePassword) {
+      return createResponse(false, null, 'A password change has been requested and you must finish the process', 400)
     }
 
     if (!bcrypt.compareSync(password, userDB.password)) {
-      return createResponse(false, null, 'email o password incorrecto', 401)
+      return createResponse(false, null, 'Invalid email o password', 401)
     }
 
-    if (!userDB.seguridad?.verificado) {
+    if (!userDB.security?.verified) {
       return createResponse(false, null, MSG_NO_VERIFICADO, 400)
     }
 
@@ -104,35 +106,35 @@ const loginUsuario = async (req) => {
       name: userDB.name,
       username: userDB.username,
       token,
-      imagen: userDB.imagen.secure_url
+      image: userDB.image.secure_url
     }
     return createResponse(true, data, null, 200)
   }
-  return createResponse(false, null, 'email o password incorrecto', 401)
+  return createResponse(false, null, 'Invalid email o password', 401)
 }
 
 const subirFotoUsuario = async (req) => {
   let data = null
 
   const { userId, files } = req
-  const imagen = files.imagen
+  const image = files.image
 
-  if (!imagen) {
-    return createResponse(false, data, 'Error obteniendo la imagen', 400)
+  if (!image) {
+    return createResponse(false, data, 'Error getting the image', 400)
   }
 
   const userExists = await User.findById(userId)
 
   if (!userExists) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
-  const imagenAntigua = userExists.imagen?.public_id
+  const imagenAntigua = userExists.image?.public_id
 
-  const uploadedImage = await uploadImage('photo_users', imagen.tempFilePath)
-  await deleteTempImage(imagen.tempFilePath)
+  const uploadedImage = await uploadImage('photo_users', image.tempFilePath)
+  await deleteTempImage(image.tempFilePath)
 
-  userExists.imagen = {
+  userExists.image = {
     public_id: uploadedImage.public_id,
     secure_url: uploadedImage.secure_url
   }
@@ -144,7 +146,7 @@ const subirFotoUsuario = async (req) => {
   }
 
   data = {
-    imagen: userUpdated.imagen.secure_url,
+    image: userUpdated.image.secure_url,
     id: userUpdated._id,
     name: userUpdated.name,
     username: userUpdated.username
@@ -157,20 +159,20 @@ const verificarEmail = async (req) => {
   let data = null
   const { cryptoToken } = req.params
 
-  const userExists = await User.find({ 'seguridad.cryptoToken': cryptoToken })
+  const userExists = await User.find({ 'security.cryptoToken': cryptoToken })
 
   if (!userExists) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
-  userExists.seguridad = verificarUser(userExists)
+  userExists.security = verificarUser(userExists)
 
   const userUpdated = await User.update(userExists._id, userExists)
 
   data = {
     email: userUpdated.email,
     username: userUpdated.username,
-    verificado: userUpdated.seguridad.verificado
+    verified: userUpdated.security.verified
   }
 
   return createResponse(true, data, null, 200)
@@ -185,13 +187,13 @@ const modificarUsuario = async (req) => {
   const userExists = await User.findById(userId)
 
   if (!userExists) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
   const usernameExists = await User.find({ username })
 
   if (userExists.username !== username && usernameExists) {
-    return createResponse(false, data, 'Username ya en uso', 400)
+    return createResponse(false, data, 'Username already exists', 400)
   }
   const passwordHash = password ? await bcrypt.hash(password, SALT_ROUNDS) : userExists.password
 
@@ -202,7 +204,7 @@ const modificarUsuario = async (req) => {
   const userUpdated = await User.update(userId, userExists)
 
   data = {
-    imagen: userUpdated.imagen.secure_url,
+    image: userUpdated.image.secure_url,
     id: userUpdated._id,
     name: userUpdated.name,
     username: userUpdated.username
@@ -218,20 +220,20 @@ const resetPassword = async (req) => {
   const { password } = body
 
   if (!password) {
-    return createResponse(false, data, 'Debe informar la nueva contraseña', 400)
+    return createResponse(false, data, 'You must inform the new password', 400)
   }
 
   const userExists = await User.find({
     _id: userid,
-    'seguridad.cryptoToken': cryptotoken,
-    'seguridad.restaurarPassword': true
+    'security.cryptoToken': cryptotoken,
+    'security.restorePassword': true
   })
 
   if (!userExists) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
-  userExists.seguridad = passwordReset(userExists)
+  userExists.security = passwordReset(userExists)
   const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
   userExists.password = passwordHash
 
@@ -240,7 +242,7 @@ const resetPassword = async (req) => {
   await sendChangedPasswordMail(userExists)
 
   data = {
-    msg: 'La password ha sido actualizada'
+    msg: 'The password has been updated'
   }
 
   return createResponse(true, data, null, 200)
@@ -251,24 +253,24 @@ const forgotPassword = async (req) => {
   const { email } = req.body
 
   if (!email) {
-    return createResponse(false, data, 'Debe informar el email para recuperar la contraseña', 400)
+    return createResponse(false, data, 'You must provide the email to recover the password', 400)
   }
 
   const userExists = await User.find({ email })
 
   if (!userExists) {
-    return createResponse(false, data, 'Error obteniendo el usuario', 400)
+    return createResponse(false, data, USER_ERROR, 400)
   }
 
-  userExists.seguridad = buildForgotPassword(userExists)
+  userExists.security = buildForgotPassword(userExists)
 
   const userUpdated = await User.update(userExists._id, userExists)
   await sendForgotPasswordMail(userUpdated)
 
   data = {
-    msg: 'Ha solicitado cambiar la contraseña',
+    msg: 'You have requested to change your password',
     id: userUpdated._id,
-    cryptoToken: userUpdated.seguridad?.cryptoToken
+    cryptoToken: userUpdated.security?.cryptoToken
   }
 
   return createResponse(true, data, null, 200)
