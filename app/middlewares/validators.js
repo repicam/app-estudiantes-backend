@@ -46,4 +46,21 @@ const guardarBusquedaValidator = [
   body('text').trim().not().isEmpty().isString().withMessage('Invalid search')
 ]
 
-module.exports = { registroValidator, cursoValidator, loginValidator, todoValidator, modificarUsuarioValidator, guardarBusquedaValidator }
+const favSearchValidator = [
+  body('title').trim().not().isEmpty().withMessage('Title is required')
+    .isString().withMessage('Invalid title'),
+  body('snippet').trim().not().isEmpty().withMessage('Snippet is required')
+    .isString().withMessage('Invalid snippet'),
+  body('pageId').trim().not().isEmpty().withMessage('PageId is required')
+    .isString().withMessage('Invalid pageId')
+]
+
+module.exports = {
+  registroValidator,
+  cursoValidator,
+  loginValidator,
+  todoValidator,
+  modificarUsuarioValidator,
+  guardarBusquedaValidator,
+  favSearchValidator
+}
